@@ -100,10 +100,13 @@ public class Toevoegen extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				MainFrame.data.add(new Person(txtVoornaam.getText(), txtAchternaam.getText(), Dag.getDagFromDagnumber(cbDag.getSelectedIndex() + 1), txtAdres.getText(), txtPostcode.getText().trim(), txtWoonplaats.getText()));
+				int id = MainFrame.data.get(MainFrame.data.size() - 1).databaseID;
+				id ++ ;
+				System.out.println(id);
+				MainFrame.data.add(new Person(id, txtVoornaam.getText(), txtAchternaam.getText(), Dag.getDagFromDagnumber(cbDag.getSelectedIndex() + 1), txtAdres.getText(), txtPostcode.getText().trim(), txtWoonplaats.getText()));
 				MainFrame.populateTable(MainFrame.table, MainFrame.data);
 
-				MainFrame.manager.put("data", new Person[] { new Person(txtVoornaam.getText(), txtAchternaam.getText(), Dag.getDagFromDagnumber(cbDag.getSelectedIndex()), txtAdres.getText(), txtPostcode.getText(), txtWoonplaats.getText()) });
+				MainFrame.manager.put("data", new Person[] { new Person(id, txtVoornaam.getText(), txtAchternaam.getText(), Dag.getDagFromDagnumber(cbDag.getSelectedIndex() + 1), txtAdres.getText(), txtPostcode.getText(), txtWoonplaats.getText()) });
 				dispose();
 			}
 		});

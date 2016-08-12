@@ -104,13 +104,16 @@ public class MainFrame extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public MainFrame() {
+
 		try {
 			MasterEncryption = new Encryption(
 					new SecretKeySpec("SUPER".getBytes(), "Blowfish"));
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
+
 		directoryLocation.put("FirstBoot", "c:\\zeecontainer\\bootflag.txt");
+
 		if (!Paths.get(directoryLocation.get("FirstBoot")).toFile().exists()) {
 			new File(directoryLocation.get("FirstBoot")).mkdirs();
 			// first time boot
@@ -119,6 +122,7 @@ public class MainFrame extends JFrame implements ActionListener {
 					+ RandomString.generateRandomString(5) + ".serMK");
 			directoryLocation.put("UDL", "C:\\zeecontainer\\"
 					+ RandomString.generateRandomString(5) + ".serUD");
+
 			try {
 				if (!Paths.get("C:\\zeecontainer\\FWRhU.serDL").toFile()
 						.exists())
@@ -130,16 +134,22 @@ public class MainFrame extends JFrame implements ActionListener {
 			}
 
 			System.out.println("FirstTimeBoot");
+
 		} else {
+
 			try {
 				directoryLocation = MasterEncryption
 						.Read("C:\\zeecontainer\\FWRhU.serDL");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+
 		}
+
 		checkDirectories(directoryLocation);
+
 		LinkedList<String> lls = new LinkedList<>();
+
 		String s = (String) JOptionPane.showInputDialog("Encryption Key?");
 		while (s == null) {
 			try {
@@ -149,11 +159,13 @@ public class MainFrame extends JFrame implements ActionListener {
 			}
 			System.out.println("Waiting for input");
 		}
+
 		lls.add(RandomString.generateRandomString(s.length()));
 		lls.add(RandomString.generateRandomString(s.length()));
 		lls.add(s);
 		lls.add(RandomString.generateRandomString(s.length()));
 		lls.add(RandomString.generateRandomString(s.length()));
+
 		try {
 			encrypter = new Encryption(
 					new SecretKeySpec(s.getBytes(), "Blowfish"));
@@ -165,6 +177,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
+
 		String host = "jdbc:mysql://192.168.178.28/zeecontainer";
 		InetAddress adrr;
 		try {
@@ -178,7 +191,9 @@ public class MainFrame extends JFrame implements ActionListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		manager = new DatabaseManager(host, "java", "javapw");
+
 		// data = manager.dummyData(100, 5);
 		// UI Code start
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -320,8 +335,11 @@ public class MainFrame extends JFrame implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane.showMessageDialog(Zeecontainer.frame,
-						"Deleted...!!!");
+
+				int row = table.getSelectedRow();
+				Person target = getPersonInRow(row);
+				System.out.println(target.voornaam);
+				
 			}
 		});
 
@@ -359,7 +377,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		});
 
 		table.setComponentPopupMenu(popupMenu);
-
 		btnToevoegen = new JButton("Toevoegen");
 		btnToevoegen.addActionListener(new ActionListener() {
 
@@ -383,7 +400,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		Person[] tmp = null;
 
 		try {
-			tmp = manager.request(null);
+			tmp = manager.request("SELECT * FROM data;");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

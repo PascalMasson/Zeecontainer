@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 import com.naugrim.zeecontainer.frame.Dag;
 import com.naugrim.zeecontainer.frame.Person;
@@ -43,20 +44,23 @@ public class DatabaseManager {
 	public Person[] request(String sql) throws Exception {
 		// TODO RETURN PERSON ARRAY. PROCESS THIS ARRAY IN CALLING FUNCTION
 		stmt = con.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM data");
+		ResultSet rs = stmt.executeQuery(sql);
 		String voornaam, achternaam, adres, postcode, woonplaats;
 		Dag dag;
+		int id;
+
 		// TODO CREATE PERSON FROM VARIABLED THEN ADD THAT PERSON TO AN ARRAY.
 		// THIS ARRAY WILL HAVE TO BE FED INTO THE DATA AND THE TABLE
 		ArrayList<Person> plist = new ArrayList<>();
 		while (rs.next()) {
+			id = rs.getInt("idData");
 			voornaam = rs.getString("Voornaam");
 			achternaam = rs.getString("Achternaam");
 			dag = Dag.fromString(rs.getString("Dag"));
 			adres = rs.getString("adres");
 			postcode = rs.getString("Postcode");
 			woonplaats = rs.getString("Woonplaats");
-			plist.add(new Person(voornaam, achternaam, dag, adres, postcode,
+			plist.add(new Person(id, voornaam, achternaam, dag, adres, postcode,
 					woonplaats));
 		}
 		System.out.println(rs.getRow());
@@ -99,7 +103,7 @@ public class DatabaseManager {
 		ArrayList<Person> array = new ArrayList<Person>();
 		for (int i = 0; i < amountofpersons; i++) {
 			// System.out.println("DatabaseManager.dummyData()");
-			array.add(new Person(RandomString.generateRandomString(namelength),
+			array.add(new Person(new Random().nextInt() ,RandomString.generateRandomString(namelength),
 					RandomString.generateRandomString(namelength),
 					Dag.RandomDag(),
 					RandomString.generateRandomString(namelength),
@@ -107,6 +111,13 @@ public class DatabaseManager {
 					RandomString.generateRandomString(namelength)));
 		}
 		return array;
+	}
+	
+	public int getNextID(){
+		
+		
+		
+		return 1;
 	}
 
 }
