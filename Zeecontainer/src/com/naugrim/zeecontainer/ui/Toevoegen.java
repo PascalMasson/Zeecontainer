@@ -38,7 +38,7 @@ public class Toevoegen extends JFrame {
 
 	public Toevoegen() {
 		System.out.println("Toevoegen.Toevoegen()");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 250, 225);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -100,13 +100,24 @@ public class Toevoegen extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				int id = MainFrame.data.get(MainFrame.data.size() - 1).databaseID;
-				id ++ ;
+				int id = MainFrame.data
+						.get(MainFrame.data.size() - 1).databaseID;
+				id++;
 				System.out.println(id);
-				MainFrame.data.add(new Person(id, txtVoornaam.getText(), txtAchternaam.getText(), Dag.getDagFromDagnumber(cbDag.getSelectedIndex() + 1), txtAdres.getText(), txtPostcode.getText().trim(), txtWoonplaats.getText()));
+				MainFrame.data.add(new Person(id, txtVoornaam.getText(),
+						txtAchternaam.getText(),
+						Dag.getDagFromDagnumber(cbDag.getSelectedIndex() + 1),
+						txtAdres.getText(), txtPostcode.getText().trim(),
+						txtWoonplaats.getText()));
 				MainFrame.populateTable(MainFrame.table, MainFrame.data);
 
-				MainFrame.manager.put("data", new Person[] { new Person(id, txtVoornaam.getText(), txtAchternaam.getText(), Dag.getDagFromDagnumber(cbDag.getSelectedIndex() + 1), txtAdres.getText(), txtPostcode.getText(), txtWoonplaats.getText()) });
+				MainFrame.manager.put("data",
+						new Person[] { new Person(id, txtVoornaam.getText(),
+								txtAchternaam.getText(),
+								Dag.getDagFromDagnumber(
+										cbDag.getSelectedIndex() + 1),
+								txtAdres.getText(), txtPostcode.getText(),
+								txtWoonplaats.getText()) });
 				dispose();
 			}
 		});

@@ -103,7 +103,8 @@ public class DatabaseManager {
 		ArrayList<Person> array = new ArrayList<Person>();
 		for (int i = 0; i < amountofpersons; i++) {
 			// System.out.println("DatabaseManager.dummyData()");
-			array.add(new Person(new Random().nextInt() ,RandomString.generateRandomString(namelength),
+			array.add(new Person(new Random().nextInt(),
+					RandomString.generateRandomString(namelength),
 					RandomString.generateRandomString(namelength),
 					Dag.RandomDag(),
 					RandomString.generateRandomString(namelength),
@@ -112,11 +113,9 @@ public class DatabaseManager {
 		}
 		return array;
 	}
-	
-	public int getNextID(){
-		
-		
-		
+
+	public int getNextID() {
+
 		return 1;
 	}
 

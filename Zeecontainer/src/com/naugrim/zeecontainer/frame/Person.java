@@ -12,7 +12,8 @@ public class Person implements Serializable {
 	public String adres, postcode, stad;
 	public int databaseID;
 
-	public Person(int id, String voornaam, String achternaam, Dag dag, String adres, String postcode, String stad) {
+	public Person(int id, String voornaam, String achternaam, Dag dag,
+			String adres, String postcode, String stad) {
 		this.voornaam = voornaam;
 		this.achternaam = achternaam;
 		this.dag = dag;

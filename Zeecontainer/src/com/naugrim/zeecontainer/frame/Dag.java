@@ -3,7 +3,8 @@ package com.naugrim.zeecontainer.frame;
 import java.util.Random;
 
 public enum Dag {
-	MAANDAG(1), DINSDAG(2), WOENSDAG(3), DONDERDAG(4), VRIJDAG(5), ZATERDAG(6), ZONDAG(7), ALLE(8);
+	MAANDAG(1), DINSDAG(2), WOENSDAG(3), DONDERDAG(4), VRIJDAG(5), ZATERDAG(
+			6), ZONDAG(7), ALLE(8);
 
 	private final int dagnummer;
 
@@ -44,56 +45,41 @@ public enum Dag {
 	public static String toString(Dag dag) {
 		if (dag == MAANDAG) {
 			return "Maandag";
-		}
-		else if (dag == DINSDAG) {
+		} else if (dag == DINSDAG) {
 			return "Dinsdag";
-		}
-		else if (dag == WOENSDAG) {
+		} else if (dag == WOENSDAG) {
 			return "Woensdag";
-		}
-		else if (dag == DONDERDAG) {
+		} else if (dag == DONDERDAG) {
 			return "Donderdag";
-		}
-		else if (dag == VRIJDAG) {
+		} else if (dag == VRIJDAG) {
 			return "Vrijdag";
-		}
-		else if (dag == ZATERDAG) {
+		} else if (dag == ZATERDAG) {
 			return "Zaterdag";
-		}
-		else if (dag == ZONDAG) {
+		} else if (dag == ZONDAG) {
 			return "Zondag";
-		}
-		else if (dag == ALLE) {
+		} else if (dag == ALLE) {
 			return "Alle";
-		}
-		else {
+		} else {
 			return "";
 		}
 	}
-	
-	public static Dag fromString(String s){
+
+	public static Dag fromString(String s) {
 		if (s.equalsIgnoreCase("maandag")) {
 			return MAANDAG;
-		}
-		else if (s.equalsIgnoreCase("dinsdag")) {
+		} else if (s.equalsIgnoreCase("dinsdag")) {
 			return DINSDAG;
-		}
-		else if (s.equalsIgnoreCase("woensdag")) {
+		} else if (s.equalsIgnoreCase("woensdag")) {
 			return WOENSDAG;
-		}
-		else if (s.equalsIgnoreCase("donderdag")) {
+		} else if (s.equalsIgnoreCase("donderdag")) {
 			return DONDERDAG;
-		}
-		else if (s.equalsIgnoreCase("vrijdag")) {
+		} else if (s.equalsIgnoreCase("vrijdag")) {
 			return VRIJDAG;
-		}
-		else if (s.equalsIgnoreCase("zaterdag")) {
+		} else if (s.equalsIgnoreCase("zaterdag")) {
 			return ZATERDAG;
-		}
-		else if (s.equalsIgnoreCase("zondag")) {
+		} else if (s.equalsIgnoreCase("zondag")) {
 			return ZONDAG;
-		}
-		else if (s.equalsIgnoreCase("alle")) {
+		} else if (s.equalsIgnoreCase("alle")) {
 			return ALLE;
 		}
 		return null;

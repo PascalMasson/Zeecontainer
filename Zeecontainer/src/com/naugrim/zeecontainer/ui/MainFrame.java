@@ -81,23 +81,10 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JMenuItem mnPrDVrijdag;
 	private JMenuItem mnPrDZaterdag;
 	private JMenuItem mnPrWeek;
-	private JButton btnToevoegen;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainFrame frame = new MainFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private JMenu mnClienten;
+	private JMenuItem mnClToevoegen;
+	private JMenuItem mnClWijzigen;
+	private JMenuItem mnClVerwijderen;
 
 	/**
 	 * Create the frame.
@@ -206,6 +193,35 @@ public class MainFrame extends JFrame implements ActionListener {
 
 		JMenuBar menuBar = new JMenuBar();
 		contentPane.add(menuBar, BorderLayout.NORTH);
+
+		mnClienten = new JMenu("Cli\u00EBnten");
+		menuBar.add(mnClienten);
+
+		mnClToevoegen = new JMenuItem("Toevoegen");
+		mnClToevoegen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							Toevoegen t = new Toevoegen();
+							t.setVisible(true);
+							System.out.println(
+									"MainFrame.MainFrame().new ActionListener() {...}.actionPerformed()");
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+
+			}
+		});
+		mnClienten.add(mnClToevoegen);
+
+		mnClWijzigen = new JMenuItem("Wijzigen");
+		mnClienten.add(mnClWijzigen);
+
+		mnClVerwijderen = new JMenuItem("Verwijderen");
+		mnClienten.add(mnClVerwijderen);
 
 		mnFilter = new JMenu("Overzichten");
 		menuBar.add(mnFilter);
@@ -338,7 +354,7 @@ public class MainFrame extends JFrame implements ActionListener {
 				int row = table.getSelectedRow();
 				Person target = getPersonInRow(row);
 				System.out.println(target.voornaam);
-				
+
 			}
 		});
 
@@ -376,18 +392,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		});
 
 		table.setComponentPopupMenu(popupMenu);
-		btnToevoegen = new JButton("Toevoegen");
-		btnToevoegen.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				Toevoegen t = new Toevoegen();
-				t.setVisible(true);
-				System.out.println(
-						"MainFrame.MainFrame().new ActionListener() {...}.actionPerformed()");
-			}
-		});
-		contentPane.add(btnToevoegen, BorderLayout.SOUTH);
 
 		try {
 			// Use enryption to write all userdata to the stored location
