@@ -10,13 +10,16 @@ public class Person implements Serializable {
 	public Dag dag;
 	public String voornaam, achternaam;
 	public String adres, postcode, stad;
+	public int databaseID;
 
-	public Person(String voornaam, String achternaam, Dag dag, String adres, String postcode, String stad) {
+	public Person(int id, String voornaam, String achternaam, Dag dag,
+			String adres, String postcode, String stad) {
 		this.voornaam = voornaam;
 		this.achternaam = achternaam;
 		this.dag = dag;
 		this.adres = adres;
 		this.postcode = postcode;
 		this.stad = stad;
+		databaseID = id;
 	}
 }

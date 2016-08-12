@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.PrinterException;
 import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -33,10 +35,9 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableModel;
 
-import com.naugrim.zeecontainer.DatabaseManager;
-import com.naugrim.zeecontainer.Zeecontainer;
 import com.naugrim.zeecontainer.frame.Dag;
 import com.naugrim.zeecontainer.frame.Person;
+import com.naugrim.zeecontainer.util.DatabaseManager;
 import com.naugrim.zeecontainer.util.Encryption;
 import com.naugrim.zeecontainer.util.RandomString;
 
@@ -46,7 +47,8 @@ public class MainFrame extends JFrame implements ActionListener {
 	private static Dag filterDag = Dag.ALLE;
 	public static DatabaseManager manager;
 	public static ArrayList<Person> data = new ArrayList<Person>();
-	public static String[] TableFields = new String[] { "Voornaam", "Achternaam", "Dag", "Adres", "Postcode", "Woonplaats" };
+	public static String[] TableFields = new String[] { "Voornaam",
+			"Achternaam", "Dag", "Adres", "Postcode", "Woonplaats" };
 	public static Encryption encrypter, MasterEncryption;
 	public static HashMap<String, String> directoryLocation = new HashMap<>();
 
@@ -79,59 +81,61 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JMenuItem mnPrDVrijdag;
 	private JMenuItem mnPrDZaterdag;
 	private JMenuItem mnPrWeek;
-	private JButton btnToevoegen;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainFrame frame = new MainFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private JMenu mnClienten;
+	private JMenuItem mnClToevoegen;
+	private JMenuItem mnClWijzigen;
+	private JMenuItem mnClVerwijderen;
 
 	/**
 	 * Create the frame.
 	 */
 	public MainFrame() {
+
 		try {
-			MasterEncryption = new Encryption(new SecretKeySpec("SUPER".getBytes(), "Blowfish"));
+			MasterEncryption = new Encryption(
+					new SecretKeySpec("SUPER".getBytes(), "Blowfish"));
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
+
 		directoryLocation.put("FirstBoot", "c:\\zeecontainer\\bootflag.txt");
+
 		if (!Paths.get(directoryLocation.get("FirstBoot")).toFile().exists()) {
 			new File(directoryLocation.get("FirstBoot")).mkdirs();
 			// first time boot
 
-			directoryLocation.put("MKL", "C:\\zeecontainer\\" + RandomString.generateRandomString(5) + ".serMK");
-			directoryLocation.put("UDL", "C:\\zeecontainer\\" + RandomString.generateRandomString(5) + ".serUD");
+			directoryLocation.put("MKL", "C:\\zeecontainer\\"
+					+ RandomString.generateRandomString(5) + ".serMK");
+			directoryLocation.put("UDL", "C:\\zeecontainer\\"
+					+ RandomString.generateRandomString(5) + ".serUD");
+
 			try {
-				if (!Paths.get("C:\\zeecontainer\\FWRhU.serDL").toFile().exists())
+				if (!Paths.get("C:\\zeecontainer\\FWRhU.serDL").toFile()
+						.exists())
 					new File("C:\\zeecontainer\\").mkdirs();
-				MasterEncryption.Write("c:\\zeecontainer\\FWRhU.serDL", directoryLocation);
+				MasterEncryption.Write("c:\\zeecontainer\\FWRhU.serDL",
+						directoryLocation);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
 			System.out.println("FirstTimeBoot");
-		}
-		else {
+
+		} else {
+
 			try {
-				directoryLocation = MasterEncryption.Read("C:\\zeecontainer\\FWRhU.serDL");
+				directoryLocation = MasterEncryption
+						.Read("C:\\zeecontainer\\FWRhU.serDL");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+
 		}
+
 		checkDirectories(directoryLocation);
+
 		LinkedList<String> lls = new LinkedList<>();
+
 		String s = (String) JOptionPane.showInputDialog("Encryption Key?");
 		while (s == null) {
 			try {
@@ -141,13 +145,16 @@ public class MainFrame extends JFrame implements ActionListener {
 			}
 			System.out.println("Waiting for input");
 		}
+
 		lls.add(RandomString.generateRandomString(s.length()));
 		lls.add(RandomString.generateRandomString(s.length()));
 		lls.add(s);
 		lls.add(RandomString.generateRandomString(s.length()));
 		lls.add(RandomString.generateRandomString(s.length()));
+
 		try {
-			encrypter = new Encryption(new SecretKeySpec(s.getBytes(), "Blowfish"));
+			encrypter = new Encryption(
+					new SecretKeySpec(s.getBytes(), "Blowfish"));
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
@@ -156,8 +163,24 @@ public class MainFrame extends JFrame implements ActionListener {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		manager = new DatabaseManager("jdbc:mysql://localhost/zeecontainer", "java", "javapw");
-		data = manager.dummyData(100, 5);
+
+		String host = "jdbc:mysql://192.168.178.28/zeecontainer";
+		InetAddress adrr;
+		try {
+			adrr = InetAddress.getLocalHost();
+			String hostname = adrr.getHostName();
+			System.out.println("hostname: " + hostname);
+			if (hostname == "Pascal-School") {
+				host = "jdbc:mysql://localhost/zeecontainer";
+			}
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		manager = new DatabaseManager(host, "java", "javapw");
+
+		// data = manager.dummyData(100, 5);
 		// UI Code start
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		setTitle("De Zeecontainer");
@@ -170,6 +193,53 @@ public class MainFrame extends JFrame implements ActionListener {
 
 		JMenuBar menuBar = new JMenuBar();
 		contentPane.add(menuBar, BorderLayout.NORTH);
+
+		mnClienten = new JMenu("Cli\u00EBnten");
+		menuBar.add(mnClienten);
+
+		mnClToevoegen = new JMenuItem("Toevoegen");
+		mnClToevoegen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							Toevoegen t = new Toevoegen();
+							t.setVisible(true);
+							System.out.println(
+									"MainFrame.MainFrame().new ActionListener() {...}.actionPerformed()");
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+
+			}
+		});
+		mnClienten.add(mnClToevoegen);
+
+		mnClWijzigen = new JMenuItem("Wijzigen");
+		mnClienten.add(mnClWijzigen);
+
+		mnClVerwijderen = new JMenuItem("Verwijderen");
+		mnClVerwijderen.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Verwijderen v = new Verwijderen();
+				v.setVisible(true);
+				
+				DefaultTableModel m = (DefaultTableModel) v.table.getModel();
+				Object[] arr = data.toArray();
+				for (int i = 0; i < arr.length; i++) {
+					Person cur = (Person) arr[i];
+					m.addRow(new Object[] { cur.voornaam, cur.achternaam,
+							Dag.toString(cur.dag), cur.adres, cur.postcode,
+							cur.stad });
+				}
+				
+			}
+		});
+		mnClienten.add(mnClVerwijderen);
 
 		mnFilter = new JMenu("Overzichten");
 		menuBar.add(mnFilter);
@@ -264,9 +334,13 @@ public class MainFrame extends JFrame implements ActionListener {
 		table = new JTable();
 		table.setFillsViewportHeight(true);
 		table.setCellSelectionEnabled(true);
-		table.setModel(new DefaultTableModel(new Object[][] { { null, null, null, null, null, null }, }, new String[] { "Voornaam", "Achternaam", "Dag", "Adres", "Postcode", "Woonplaats" }) {
+		table.setModel(new DefaultTableModel(
+				new Object[][] { { null, null, null, null, null, null }, },
+				new String[] { "Voornaam", "Achternaam", "Dag", "Adres",
+						"Postcode", "Woonplaats" }) {
 			@SuppressWarnings("rawtypes")
-			Class[] columnTypes = new Class[] { String.class, String.class, String.class, String.class, Object.class, String.class };
+			Class[] columnTypes = new Class[] { String.class, String.class,
+					String.class, String.class, Object.class, String.class };
 
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int columnIndex) {
@@ -294,7 +368,11 @@ public class MainFrame extends JFrame implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane.showMessageDialog(Zeecontainer.frame, "Deleted...!!!");
+
+				int row = table.getSelectedRow();
+				Person target = getPersonInRow(row);
+				System.out.println(target.voornaam);
+
 			}
 		});
 
@@ -308,9 +386,12 @@ public class MainFrame extends JFrame implements ActionListener {
 
 					@Override
 					public void run() {
-						int rowAtPoint = table.rowAtPoint(SwingUtilities.convertPoint(popupMenu, new Point(0, 0), table));
+						int rowAtPoint = table.rowAtPoint(
+								SwingUtilities.convertPoint(popupMenu,
+										new Point(0, 0), table));
 						if (rowAtPoint > -1) {
-							table.setRowSelectionInterval(rowAtPoint, rowAtPoint);
+							table.setRowSelectionInterval(rowAtPoint,
+									rowAtPoint);
 						}
 					}
 				});
@@ -330,18 +411,6 @@ public class MainFrame extends JFrame implements ActionListener {
 
 		table.setComponentPopupMenu(popupMenu);
 
-		btnToevoegen = new JButton("Toevoegen");
-		btnToevoegen.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				Toevoegen t = new Toevoegen();
-				t.setVisible(true);
-				System.out.println("MainFrame.MainFrame().new ActionListener() {...}.actionPerformed()");
-			}
-		});
-		contentPane.add(btnToevoegen, BorderLayout.SOUTH);
-
 		try {
 			// Use enryption to write all userdata to the stored location
 			encrypter.Write(directoryLocation.get("UDL"), data.toArray());
@@ -349,40 +418,23 @@ public class MainFrame extends JFrame implements ActionListener {
 			e.printStackTrace();
 		}
 
-		// convert the object array to a person array
-		// convert the list to an object array. since you can't convert
-		// an object array to a person array. first dimpp the object into a
-		// person arraylist since an object can be converted to a person. after
-		// that create a person array with a size, the zise of the list. after
-		// that
-		// use an iterator to loop through the list andd add all persons to a
-		// new array. this array will be uploaded to the database
+		Person[] tmp = null;
 
-		Object[] oarr = data.toArray();
-		ArrayList<Person> plist = new ArrayList<>();
-
-		for (int i = 0; i < oarr.length; i++) {
-			Object object = oarr[i];
-			plist.add((Person) object);
-		}
-
-		Person[] parr = new Person[plist.size()];
-		int i = 0;
-		for (Iterator<Person> iterator = plist.iterator(); iterator.hasNext();) {
-			Person person = iterator.next();
-			parr[i] = person;
-			i++;
-		}
-		// TODO REMOVE From here
-		// Upload the data to the database
-		manager.put("data", parr);
 		try {
-			manager.request("");
+			tmp = manager.request("SELECT * FROM data;");
 		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		// TODO STOP REMOVE HERE
+		data.removeAll(data);
+
+		for (int j = 0; j < tmp.length; j++) {
+			Person person = tmp[j];
+			data.add(person);
+		}
+		populateTable(table, data);
+
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -423,13 +475,16 @@ public class MainFrame extends JFrame implements ActionListener {
 		}
 	}
 
-	static void populateTable(JTable table, ArrayList<Person> list) {
+	public static void populateTable(JTable table, ArrayList<Person> list) {
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		Person cur;
+		model.setRowCount(0);
 		for (int i = 0; i < list.size(); i++) {
 			cur = list.get(i);
 			if (filterDag == Dag.ALLE || filterDag == cur.dag)
-				model.addRow(new Object[] { cur.voornaam, cur.achternaam, Dag.toString(cur.dag), cur.adres, cur.postcode, cur.stad });
+				model.addRow(new Object[] { cur.voornaam, cur.achternaam,
+						Dag.toString(cur.dag), cur.adres, cur.postcode,
+						cur.stad });
 
 		}
 	}
