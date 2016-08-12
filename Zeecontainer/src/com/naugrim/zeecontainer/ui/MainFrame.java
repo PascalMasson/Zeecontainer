@@ -221,6 +221,24 @@ public class MainFrame extends JFrame implements ActionListener {
 		mnClienten.add(mnClWijzigen);
 
 		mnClVerwijderen = new JMenuItem("Verwijderen");
+		mnClVerwijderen.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Verwijderen v = new Verwijderen();
+				v.setVisible(true);
+				
+				DefaultTableModel m = (DefaultTableModel) v.table.getModel();
+				Object[] arr = data.toArray();
+				for (int i = 0; i < arr.length; i++) {
+					Person cur = (Person) arr[i];
+					m.addRow(new Object[] { cur.voornaam, cur.achternaam,
+							Dag.toString(cur.dag), cur.adres, cur.postcode,
+							cur.stad });
+				}
+				
+			}
+		});
 		mnClienten.add(mnClVerwijderen);
 
 		mnFilter = new JMenu("Overzichten");
@@ -457,9 +475,10 @@ public class MainFrame extends JFrame implements ActionListener {
 		}
 	}
 
-	static void populateTable(JTable table, ArrayList<Person> list) {
+	public static void populateTable(JTable table, ArrayList<Person> list) {
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		Person cur;
+		model.setRowCount(0);
 		for (int i = 0; i < list.size(); i++) {
 			cur = list.get(i);
 			if (filterDag == Dag.ALLE || filterDag == cur.dag)

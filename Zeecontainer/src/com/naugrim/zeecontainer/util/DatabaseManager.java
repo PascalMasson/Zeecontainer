@@ -60,7 +60,7 @@ public class DatabaseManager {
 			adres = rs.getString("adres");
 			postcode = rs.getString("Postcode");
 			woonplaats = rs.getString("Woonplaats");
-			plist.add(new Person(id, voornaam, achternaam, dag, adres, postcode,
+			plist.add(new Person(id, voornaam.trim(), achternaam.trim(), dag, adres, postcode.trim(),
 					woonplaats));
 		}
 		System.out.println(rs.getRow());
@@ -92,7 +92,6 @@ public class DatabaseManager {
 			try {
 				stmt.execute(sql);
 			} catch (SQLException e) {
-				http: // download.eclipse.org/egit/updates
 				e.printStackTrace();
 			}
 		}
@@ -117,6 +116,11 @@ public class DatabaseManager {
 	public int getNextID() {
 
 		return 1;
+	}
+
+	public void Delete(String string) throws Exception {
+		stmt = con.createStatement();
+		stmt.executeUpdate(string);	
 	}
 
 }
