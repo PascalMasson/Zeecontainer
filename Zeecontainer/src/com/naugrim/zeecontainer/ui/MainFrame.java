@@ -33,10 +33,10 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableModel;
 
-import com.naugrim.zeecontainer.DatabaseManager;
 import com.naugrim.zeecontainer.Zeecontainer;
 import com.naugrim.zeecontainer.frame.Dag;
 import com.naugrim.zeecontainer.frame.Person;
+import com.naugrim.zeecontainer.util.DatabaseManager;
 import com.naugrim.zeecontainer.util.Encryption;
 import com.naugrim.zeecontainer.util.RandomString;
 
