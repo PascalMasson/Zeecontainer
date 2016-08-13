@@ -86,19 +86,19 @@ public enum Dag {
 	}
 
 	public static int getNumberFromDag(Dag dag) {
-		if(dag == MAANDAG){
+		if (dag == MAANDAG) {
 			return 1;
-		}else if (dag == DINSDAG){
+		} else if (dag == DINSDAG) {
 			return 2;
-		} else if (dag == WOENSDAG){
+		} else if (dag == WOENSDAG) {
 			return 3;
-		} else if (dag == DONDERDAG){
+		} else if (dag == DONDERDAG) {
 			return 4;
-		} else if (dag == VRIJDAG){
+		} else if (dag == VRIJDAG) {
 			return 5;
-		} else if (dag == ZATERDAG){
+		} else if (dag == ZATERDAG) {
 			return 6;
-		} else if (dag == ZONDAG){
+		} else if (dag == ZONDAG) {
 			return 7;
 		}
 		return 0;

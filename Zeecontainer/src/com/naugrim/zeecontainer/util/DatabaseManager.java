@@ -58,8 +58,8 @@ public class DatabaseManager {
 			adres = rs.getString("adres");
 			postcode = rs.getString("Postcode");
 			woonplaats = rs.getString("Woonplaats");
-			plist.add(new Person(id, voornaam.trim(), achternaam.trim(), dag, adres, postcode.trim(),
-					woonplaats));
+			plist.add(new Person(id, voornaam.trim(), achternaam.trim(), dag,
+					adres, postcode.trim(), woonplaats));
 		}
 		System.out.println(rs.getRow());
 		System.out.println(rs.getFetchSize() + "/" + rs.getFetchDirection());
@@ -118,7 +118,7 @@ public class DatabaseManager {
 
 	public void Delete(String string) throws Exception {
 		stmt = con.createStatement();
-		stmt.executeUpdate(string);	
+		stmt.executeUpdate(string);
 	}
 
 }

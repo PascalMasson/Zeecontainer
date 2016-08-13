@@ -32,8 +32,10 @@ public class Encryption {
 
 		SealedObject so = new SealedObject(objects, cipher);
 
-		CipherOutputStream cipherOutputStream = new CipherOutputStream(new BufferedOutputStream(new FileOutputStream(path)), cipher);
-		ObjectOutputStream objectOutputStream = new ObjectOutputStream(cipherOutputStream);
+		CipherOutputStream cipherOutputStream = new CipherOutputStream(
+				new BufferedOutputStream(new FileOutputStream(path)), cipher);
+		ObjectOutputStream objectOutputStream = new ObjectOutputStream(
+				cipherOutputStream);
 		objectOutputStream.writeObject(so);
 		objectOutputStream.close();
 		System.out.println("Data has been saved in " + filePath);
@@ -47,8 +49,10 @@ public class Encryption {
 			System.err.println("KEY IS NULL");
 		}
 		cipher.init(Cipher.DECRYPT_MODE, key);
-		CipherInputStream cipherInputStream = new CipherInputStream(new BufferedInputStream(new FileInputStream(path)), cipher);
-		ObjectInputStream inputStream = new ObjectInputStream(cipherInputStream);
+		CipherInputStream cipherInputStream = new CipherInputStream(
+				new BufferedInputStream(new FileInputStream(path)), cipher);
+		ObjectInputStream inputStream = new ObjectInputStream(
+				cipherInputStream);
 		SealedObject so = (SealedObject) inputStream.readObject();
 		// Object[] arr = (Object[]) so.getObject( cipher );
 		// return arr;
@@ -64,8 +68,10 @@ public class Encryption {
 
 		SealedObject so = new SealedObject((Serializable) s, cipher);
 
-		CipherOutputStream cipherOutputStream = new CipherOutputStream(new BufferedOutputStream(new FileOutputStream(path)), cipher);
-		ObjectOutputStream objectOutputStream = new ObjectOutputStream(cipherOutputStream);
+		CipherOutputStream cipherOutputStream = new CipherOutputStream(
+				new BufferedOutputStream(new FileOutputStream(path)), cipher);
+		ObjectOutputStream objectOutputStream = new ObjectOutputStream(
+				cipherOutputStream);
 		objectOutputStream.writeObject(so);
 		objectOutputStream.close();
 		System.out.println("Data has been saved in " + filePath);

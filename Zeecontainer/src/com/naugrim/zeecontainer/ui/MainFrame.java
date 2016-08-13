@@ -219,7 +219,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
 		mnClWijzigen = new JMenuItem("Wijzigen");
 		mnClWijzigen.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				WijzigenZoek wz = new WijzigenZoek();
@@ -231,14 +231,14 @@ public class MainFrame extends JFrame implements ActionListener {
 
 		mnClVerwijderen = new JMenuItem("Verwijderen");
 		mnClVerwijderen.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Verwijderen v = new Verwijderen();
 				v.setVisible(true);
-				
+
 				populateTable(v.table, data);
-				
+
 			}
 		});
 		mnClienten.add(mnClVerwijderen);
