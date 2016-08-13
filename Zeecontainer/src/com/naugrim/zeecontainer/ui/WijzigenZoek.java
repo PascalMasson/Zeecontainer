@@ -1,9 +1,9 @@
 package com.naugrim.zeecontainer.ui;
 
 import java.awt.BorderLayout;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Iterator;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,17 +24,20 @@ import com.naugrim.zeecontainer.frame.Dag;
 import com.naugrim.zeecontainer.frame.Person;
 
 @SuppressWarnings("serial")
-public class Verwijderen extends JFrame implements DocumentListener {
+public class WijzigenZoek extends JFrame implements DocumentListener {
 
-	public static Verwijderen instance;
+	public static WijzigenZoek instance;
 	private JPanel contentPane;
-	final JTable table;
+	static JTable table;
 
 	final TableRowSorter<TableModel> sorter;
 	DefaultTableModel model;
 	private JTextField textField;
 
-	public Verwijderen() {
+	/**
+	 * Create the frame.
+	 */
+	public WijzigenZoek() {
 		instance = this;
 		model = new DefaultTableModel();
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -67,19 +70,11 @@ public class Verwijderen extends JFrame implements DocumentListener {
 		sorter = new TableRowSorter<TableModel>(table.getModel());
 		table.setRowSorter(sorter);
 
-		JButton btnVerwijderen = new JButton("Verwijderen");
+		JButton btnVerwijderen = new JButton("Wijzigen");
 		btnVerwijderen.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				int n = JOptionPane.showConfirmDialog(Verwijderen.instance,
-						"Weet je zeker dat je de geselecteerde items wil verwijderen?",
-						"", JOptionPane.YES_NO_OPTION);
-				System.out.println(n);
-				if (n == 1) {
-					return;
-				}
 
 				int row = table.getSelectedRow();
 				String voornaam, achternaam, adres, postcode, woonplaats;
@@ -107,26 +102,21 @@ public class Verwijderen extends JFrame implements DocumentListener {
 								if (person.adres == adres) {
 									if (person.postcode == postcode) {
 										if (person.stad == woonplaats) {
-											// alles is hetzelfde, ga ervan uit
-											// dat je het juiste persoon hebt
-											try {
-												MainFrame.manager
-														.Delete("DELETE FROM `zeecontainer`.`data` WHERE `idData`='"
-																+ person.databaseID
-																+ "';");
-											} catch (Exception e1) {
-												// TODO Auto-generated catch
-												// block
-												e1.printStackTrace();
-											}
-
-											MainFrame.data.remove(i);
-											MainFrame.populateTable(table,
-													MainFrame.data);
-											MainFrame.populateTable(
-													MainFrame.table,
-													MainFrame.data);
-
+											WijzigenWijzig ww = new WijzigenWijzig(
+													person);
+											ww.setVisible(true);
+											ww.txtVoornaam
+													.setText(person.voornaam);
+											ww.txtAchternaam
+													.setText(person.achternaam);
+											ww.cbDag.setSelectedIndex(
+													Dag.getNumberFromDag(
+															person.dag) - 1);
+											ww.txtAdres.setText(person.adres);
+											ww.txtPostcode
+													.setText(person.postcode);
+											ww.txtWoonplaats
+													.setText(person.stad);
 										} else {
 											continue;
 										}
@@ -146,7 +136,6 @@ public class Verwijderen extends JFrame implements DocumentListener {
 						continue;
 					}
 				}
-
 			}
 		});
 		contentPane.add(btnVerwijderen, BorderLayout.SOUTH);
@@ -183,4 +172,5 @@ public class Verwijderen extends JFrame implements DocumentListener {
 			sorter.setRowFilter(RowFilter.regexFilter(text));
 		}
 	}
+
 }

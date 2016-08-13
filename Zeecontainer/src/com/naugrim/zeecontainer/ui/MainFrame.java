@@ -218,6 +218,15 @@ public class MainFrame extends JFrame implements ActionListener {
 		mnClienten.add(mnClToevoegen);
 
 		mnClWijzigen = new JMenuItem("Wijzigen");
+		mnClWijzigen.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				WijzigenZoek wz = new WijzigenZoek();
+				wz.setVisible(true);
+				populateTable(wz.table, data);
+			}
+		});
 		mnClienten.add(mnClWijzigen);
 
 		mnClVerwijderen = new JMenuItem("Verwijderen");
@@ -228,14 +237,7 @@ public class MainFrame extends JFrame implements ActionListener {
 				Verwijderen v = new Verwijderen();
 				v.setVisible(true);
 				
-				DefaultTableModel m = (DefaultTableModel) v.table.getModel();
-				Object[] arr = data.toArray();
-				for (int i = 0; i < arr.length; i++) {
-					Person cur = (Person) arr[i];
-					m.addRow(new Object[] { cur.voornaam, cur.achternaam,
-							Dag.toString(cur.dag), cur.adres, cur.postcode,
-							cur.stad });
-				}
+				populateTable(v.table, data);
 				
 			}
 		});
