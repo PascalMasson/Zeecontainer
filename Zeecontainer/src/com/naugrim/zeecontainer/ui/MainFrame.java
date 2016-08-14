@@ -7,24 +7,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.PrinterException;
 import java.io.File;
+import java.io.FileWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.crypto.spec.SecretKeySpec;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -37,8 +40,10 @@ import javax.swing.table.DefaultTableModel;
 
 import com.naugrim.zeecontainer.frame.Dag;
 import com.naugrim.zeecontainer.frame.Person;
+import com.naugrim.zeecontainer.util.CSV;
 import com.naugrim.zeecontainer.util.DatabaseManager;
 import com.naugrim.zeecontainer.util.Encryption;
+import com.naugrim.zeecontainer.util.Excel;
 import com.naugrim.zeecontainer.util.RandomString;
 
 @SuppressWarnings("serial")
@@ -51,6 +56,7 @@ public class MainFrame extends JFrame implements ActionListener {
 			"Achternaam", "Dag", "Adres", "Postcode", "Woonplaats" };
 	public static Encryption encrypter, MasterEncryption;
 	public static HashMap<String, String> directoryLocation = new HashMap<>();
+	private String password;
 
 	private JPanel contentPane;
 	static JTable table;
@@ -91,6 +97,22 @@ public class MainFrame extends JFrame implements ActionListener {
 	 */
 	public MainFrame() {
 
+		String host = "jdbc:mysql://192.168.178.28/zeecontainer";
+		InetAddress adrr;
+		try {
+			adrr = InetAddress.getLocalHost();
+			String hostname = adrr.getHostName();
+			System.out.println("hostname: " + hostname);
+			if (hostname == "Pascal-School") {
+				host = "jdbc:mysql://localhost/zeecontainer";
+			}
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		manager = new DatabaseManager(host, "java", "javapw");
+		
 		try {
 			MasterEncryption = new Encryption(
 					new SecretKeySpec("SUPER".getBytes(), "Blowfish"));
@@ -121,6 +143,12 @@ public class MainFrame extends JFrame implements ActionListener {
 
 			System.out.println("FirstTimeBoot");
 
+			String pw = JOptionPane.showInputDialog(
+					"What would you like to use as a password");
+
+			manager.SendPassword(pw);
+			
+
 		} else {
 
 			try {
@@ -131,54 +159,25 @@ public class MainFrame extends JFrame implements ActionListener {
 			}
 
 		}
-
-		checkDirectories(directoryLocation);
-
-		LinkedList<String> lls = new LinkedList<>();
-
-		String s = (String) JOptionPane.showInputDialog("Encryption Key?");
-		while (s == null) {
-			try {
-				Thread.sleep(250);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			System.out.println("Waiting for input");
+		while (!checkPassword()){
+			System.out.println("Waiting for correct password");
 		}
-
-		lls.add(RandomString.generateRandomString(s.length()));
-		lls.add(RandomString.generateRandomString(s.length()));
-		lls.add(s);
-		lls.add(RandomString.generateRandomString(s.length()));
-		lls.add(RandomString.generateRandomString(s.length()));
+			
+		checkDirectories(directoryLocation);
 
 		try {
 			encrypter = new Encryption(
-					new SecretKeySpec(s.getBytes(), "Blowfish"));
+					new SecretKeySpec(password.getBytes(), "Blowfish"));
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
 		try {
-			MasterEncryption.Write(directoryLocation.get("MKL"), s);
+			MasterEncryption.Write(directoryLocation.get("MKL"), password);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 
-		String host = "jdbc:mysql://192.168.178.28/zeecontainer";
-		InetAddress adrr;
-		try {
-			adrr = InetAddress.getLocalHost();
-			String hostname = adrr.getHostName();
-			System.out.println("hostname: " + hostname);
-			if (hostname == "Pascal-School") {
-				host = "jdbc:mysql://localhost/zeecontainer";
-			}
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		manager = new DatabaseManager(host, "java", "javapw");
+		
 
 		// data = manager.dummyData(100, 5);
 		// UI Code start
@@ -284,21 +283,177 @@ public class MainFrame extends JFrame implements ActionListener {
 		mnPrint.add(mnPrDag);
 
 		mnPrDMaandag = new JMenuItem("Maandag");
+		mnPrDMaandag.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				HashMap<String, Object[]> map = new HashMap<>();
+
+				int i = 0;
+				
+				for (Iterator iterator = data.iterator(); iterator.hasNext();) {
+					Person p = (Person) iterator.next();
+					
+					if(p.dag == Dag.MAANDAG)
+					map.put(String.valueOf(i), new Object[]{p.voornaam, p.achternaam, p.dag.toString(), p.adres, p.postcode, p.woonplaats});
+					
+					i++;
+				}
+
+				try {
+					new Excel(map, "c:\\zeecontainer\\maandag.xls");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		mnPrDag.add(mnPrDMaandag);
 
 		mnPrDDinsdag = new JMenuItem("Dinsdag");
+		mnPrDDinsdag.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				HashMap<String, Object[]> map = new HashMap<>();
+
+				int i = 0;
+				
+				for (Iterator iterator = data.iterator(); iterator.hasNext();) {
+					Person p = (Person) iterator.next();
+					
+					if(p.dag == Dag.DINSDAG)
+					map.put(String.valueOf(i), new Object[]{p.voornaam, p.achternaam, p.dag.toString(), p.adres, p.postcode, p.woonplaats});
+					
+					i++;
+				}
+
+				try {
+					new Excel(map, "c:\\zeecontainer\\dinsdag.xls");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		mnPrDag.add(mnPrDDinsdag);
 
 		mnPrDWoensdag = new JMenuItem("Woensdag");
+		mnPrDWoensdag.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				HashMap<String, Object[]> map = new HashMap<>();
+
+				int i = 0;
+				
+				for (Iterator iterator = data.iterator(); iterator.hasNext();) {
+					Person p = (Person) iterator.next();
+					
+					if(p.dag == Dag.WOENSDAG)
+					map.put(String.valueOf(i), new Object[]{p.voornaam, p.achternaam, p.dag.toString(), p.adres, p.postcode, p.woonplaats});
+					
+					i++;
+				}
+
+				try {
+					new Excel(map, "c:\\zeecontainer\\woensdag.xls");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		mnPrDag.add(mnPrDWoensdag);
 
 		mnPrDDonderdag = new JMenuItem("Donderdag");
+		mnPrDDonderdag.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				HashMap<String, Object[]> map = new HashMap<>();
+
+				int i = 0;
+				
+				for (Iterator iterator = data.iterator(); iterator.hasNext();) {
+					Person p = (Person) iterator.next();
+					
+					if(p.dag == Dag.DONDERDAG)
+					map.put(String.valueOf(i), new Object[]{p.voornaam, p.achternaam, p.dag.toString(), p.adres, p.postcode, p.woonplaats});
+					
+					i++;
+				}
+
+				try {
+					new Excel(map, "c:\\zeecontainer\\donderdag.xls");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		mnPrDag.add(mnPrDDonderdag);
 
 		mnPrDVrijdag = new JMenuItem("Vrijdag");
+		mnPrDVrijdag.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				HashMap<String, Object[]> map = new HashMap<>();
+
+				int i = 0;
+				
+				for (Iterator iterator = data.iterator(); iterator.hasNext();) {
+					Person p = (Person) iterator.next();
+					
+					if(p.dag == Dag.VRIJDAG)
+					map.put(String.valueOf(i), new Object[]{p.voornaam, p.achternaam, p.dag.toString(), p.adres, p.postcode, p.woonplaats});
+					
+					i++;
+				}
+
+				try {
+					new Excel(map, "c:\\zeecontainer\\vrijdag.xls");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		mnPrDag.add(mnPrDVrijdag);
 
 		mnPrDZaterdag = new JMenuItem("Zaterdag");
+		mnPrDZaterdag.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				HashMap<String, Object[]> map = new HashMap<>();
+
+				int i = 0;
+				
+				for (Iterator iterator = data.iterator(); iterator.hasNext();) {
+					Person p = (Person) iterator.next();
+					
+					if(p.dag == Dag.ZATERDAG)
+					map.put(String.valueOf(i), new Object[]{p.voornaam, p.achternaam, p.dag.toString(), p.adres, p.postcode, p.woonplaats});
+					
+					i++;
+				}
+
+				try {
+					new Excel(map, "c:\\zeecontainer\\zaterdag.xls");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		mnPrDag.add(mnPrDZaterdag);
 
 		mnPrWeek = new JMenuItem("Weekoverzicht");
@@ -352,6 +507,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		((DefaultTableModel) table.getModel()).setRowCount(0);
 
 		table.setBounds(10, 94, 534, 276);
+
 		scrollPane.setViewportView(table);
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -360,58 +516,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		}
 		// After the table is created populate it with the data in the list
 		populateTable(table, data);
-
-		// create a popupmenu for a rightclick event on the table
-		JPopupMenu popupMenu = new JPopupMenu();
-
-		// create a menuItem with an actionListener
-		JMenuItem deleteItem = new JMenuItem("Delete");
-		deleteItem.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-
-				int row = table.getSelectedRow();
-				Person target = getPersonInRow(row);
-				System.out.println(target.voornaam);
-
-			}
-		});
-
-		// add the items to the popupmenu
-		popupMenu.add(deleteItem);
-		popupMenu.addPopupMenuListener(new PopupMenuListener() {
-
-			@Override
-			public void popupMenuWillBecomeVisible(PopupMenuEvent arg0) {
-				SwingUtilities.invokeLater(new Runnable() {
-
-					@Override
-					public void run() {
-						int rowAtPoint = table.rowAtPoint(
-								SwingUtilities.convertPoint(popupMenu,
-										new Point(0, 0), table));
-						if (rowAtPoint > -1) {
-							table.setRowSelectionInterval(rowAtPoint,
-									rowAtPoint);
-						}
-					}
-				});
-
-			}
-
-			@Override
-			public void popupMenuWillBecomeInvisible(PopupMenuEvent arg0) {
-
-			}
-
-			@Override
-			public void popupMenuCanceled(PopupMenuEvent arg0) {
-
-			}
-		});
-
-		table.setComponentPopupMenu(popupMenu);
 
 		try {
 			// Use enryption to write all userdata to the stored location
@@ -436,6 +540,41 @@ public class MainFrame extends JFrame implements ActionListener {
 			data.add(person);
 		}
 		populateTable(table, data);
+
+		Object[] objarray = data.toArray();
+		Person[] perarray = new Person[objarray.length];
+		int i = 0;
+		for (Object o : objarray) {
+			perarray[i] = (Person) o;
+			i++;
+		}
+		List<Person> plist = Arrays.asList(perarray);
+
+		String csvFile = "c:\\zeecontainer\\data.csv";
+		try {
+			FileWriter writer = new FileWriter(new File(csvFile));
+			CSV.writeLine(writer, Arrays.asList("Voornaam", "Achternaam", "Dag",
+					"Adres", "Postcode", "Woonplaats"));
+			for (Person p : plist) {
+				List<String> list = new ArrayList<>();
+				list.add(p.voornaam);
+				list.add(p.achternaam);
+				list.add(p.dag.toString());
+				list.add(p.adres);
+				list.add(p.postcode);
+				list.add(p.woonplaats);
+
+				CSV.writeLine(writer, list);
+
+			}
+
+			writer.flush();
+			writer.close();
+
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 	}
 
@@ -485,8 +624,8 @@ public class MainFrame extends JFrame implements ActionListener {
 			cur = list.get(i);
 			if (filterDag == Dag.ALLE || filterDag == cur.dag)
 				model.addRow(new Object[] { cur.voornaam, cur.achternaam,
-						Dag.toString(cur.dag), cur.adres, cur.postcode,
-						cur.stad });
+						cur.dag.toString(), cur.adres, cur.postcode,
+						cur.woonplaats });
 
 		}
 	}
@@ -521,5 +660,21 @@ public class MainFrame extends JFrame implements ActionListener {
 				new File(p.toString());
 			}
 		}
+	}
+
+	public boolean checkPassword() {
+		
+		String result = JOptionPane.showInputDialog("Password?");
+		int DBPW = manager.getPassword();
+		
+		if(DBPW == result.hashCode()){
+			return true;
+		} else {
+			checkPassword();
+		}
+		
+		
+		return false;
+		
 	}
 }

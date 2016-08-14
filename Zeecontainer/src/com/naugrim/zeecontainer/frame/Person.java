@@ -9,7 +9,7 @@ public class Person implements Serializable {
 	private static final long serialVersionUID = 5370307042704985068L;
 	public Dag dag;
 	public String voornaam, achternaam;
-	public String adres, postcode, stad;
+	public String adres, postcode, woonplaats;
 	public int databaseID;
 
 	public Person(int id, String voornaam, String achternaam, Dag dag,
@@ -19,7 +19,7 @@ public class Person implements Serializable {
 		this.dag = dag;
 		this.adres = adres;
 		this.postcode = postcode;
-		this.stad = stad;
+		this.woonplaats = stad;
 		databaseID = id;
 	}
 }

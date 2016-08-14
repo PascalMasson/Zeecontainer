@@ -42,22 +42,22 @@ public enum Dag {
 		return getDagFromDagnumber(new Random().nextInt(5) + 1);
 	}
 
-	public static String toString(Dag dag) {
-		if (dag == MAANDAG) {
+	public String toString() {
+		if (this == MAANDAG) {
 			return "Maandag";
-		} else if (dag == DINSDAG) {
+		} else if (this == DINSDAG) {
 			return "Dinsdag";
-		} else if (dag == WOENSDAG) {
+		} else if (this == WOENSDAG) {
 			return "Woensdag";
-		} else if (dag == DONDERDAG) {
+		} else if (this == DONDERDAG) {
 			return "Donderdag";
-		} else if (dag == VRIJDAG) {
+		} else if (this == VRIJDAG) {
 			return "Vrijdag";
-		} else if (dag == ZATERDAG) {
+		} else if (this == ZATERDAG) {
 			return "Zaterdag";
-		} else if (dag == ZONDAG) {
+		} else if (this == ZONDAG) {
 			return "Zondag";
-		} else if (dag == ALLE) {
+		} else if (this == ALLE) {
 			return "Alle";
 		} else {
 			return "";

@@ -106,7 +106,7 @@ public class Verwijderen extends JFrame implements DocumentListener {
 							if (person.dag == dag) {
 								if (person.adres == adres) {
 									if (person.postcode == postcode) {
-										if (person.stad == woonplaats) {
+										if (person.woonplaats == woonplaats) {
 											// alles is hetzelfde, ga ervan uit
 											// dat je het juiste persoon hebt
 											try {

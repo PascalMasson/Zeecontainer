@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.security.InvalidKeyException;
 import java.util.HashMap;
 
 import javax.crypto.Cipher;
@@ -60,6 +61,25 @@ public class Encryption {
 		cipherInputStream.close();
 		return (HashMap<String, String>) so.getObject(cipher);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public String ReadPW(String path) throws Exception {
+		if (key == null) {
+			System.out.println("Encryption.Read()");
+			System.err.println("KEY IS NULL");
+		}
+		cipher.init(Cipher.DECRYPT_MODE, key);
+		CipherInputStream cipherInputStream = new CipherInputStream(
+				new BufferedInputStream(new FileInputStream(path)), cipher);
+		ObjectInputStream inputStream = new ObjectInputStream(
+				cipherInputStream);
+		SealedObject so = (SealedObject) inputStream.readObject();
+		// Object[] arr = (Object[]) so.getObject( cipher );
+		// return arr;
+		inputStream.close();
+		cipherInputStream.close();
+		return (String) so.getObject(cipher);
+	}
 
 	public void Write(String path, Object s) throws Exception {
 		filePath = path;
@@ -77,5 +97,6 @@ public class Encryption {
 		System.out.println("Data has been saved in " + filePath);
 
 	}
+
 
 }

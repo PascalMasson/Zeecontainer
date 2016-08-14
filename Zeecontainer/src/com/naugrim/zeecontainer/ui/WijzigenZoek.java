@@ -101,7 +101,7 @@ public class WijzigenZoek extends JFrame implements DocumentListener {
 							if (person.dag == dag) {
 								if (person.adres == adres) {
 									if (person.postcode == postcode) {
-										if (person.stad == woonplaats) {
+										if (person.woonplaats == woonplaats) {
 											WijzigenWijzig ww = new WijzigenWijzig(
 													person);
 											ww.setVisible(true);
@@ -116,7 +116,7 @@ public class WijzigenZoek extends JFrame implements DocumentListener {
 											ww.txtPostcode
 													.setText(person.postcode);
 											ww.txtWoonplaats
-													.setText(person.stad);
+													.setText(person.woonplaats);
 										} else {
 											continue;
 										}

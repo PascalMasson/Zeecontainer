@@ -77,6 +77,19 @@ public class DatabaseManager {
 		return parr;
 	}
 
+	public void SendPassword(String PW) {
+		String sql = "INSERT INTO `zeecontainer`.`password` (`hash`) VALUES ('"
+				+ PW.hashCode() + "');";
+
+		try {
+			stmt.execute(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
 	public void put(String table_name, Person[] Values) {
 		String sql = "";
 		for (int i = 0; i < Values.length; i++) {
@@ -84,9 +97,9 @@ public class DatabaseManager {
 					+ "` (`Voornaam`, `Achternaam`, `Dag`, "
 					+ "`Adres`, `Postcode`, `Woonplaats`) VALUES ('"
 					+ Values[i].voornaam + "', '" + Values[i].achternaam
-					+ "', '" + Dag.toString(Values[i].dag) + "', '"
+					+ "', '" + Values[i].dag.toString() + "', '"
 					+ Values[i].adres + "', ' " + Values[i].postcode + "', '"
-					+ Values[i].stad + "');";
+					+ Values[i].woonplaats + "');";
 			try {
 				stmt.execute(sql);
 			} catch (SQLException e) {
@@ -121,4 +134,23 @@ public class DatabaseManager {
 		stmt.executeUpdate(string);
 	}
 
+	public int getPassword() {
+		try {
+			stmt = con.createStatement();
+			ResultSet rs = stmt
+					.executeQuery("SELECT * FROM zeecontainer.password;");
+			int pwhash = 0;
+
+			while (rs.next()) {
+				pwhash = rs.getInt(2);
+			}
+
+			System.out.println(pwhash);
+			return pwhash;
+
+		} catch (Exception e) {
+
+		}
+		return 0;
+	}
 }

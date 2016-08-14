@@ -104,7 +104,7 @@ public class WijzigenWijzig extends JFrame {
 				p.dag = Dag.getDagFromDagnumber(cbDag.getSelectedIndex() + 1);
 				p.adres = txtAdres.getText();
 				p.postcode = txtPostcode.getText();
-				p.stad = txtWoonplaats.getText();
+				p.woonplaats = txtWoonplaats.getText();
 
 				MainFrame.populateTable(MainFrame.table, MainFrame.data);
 				MainFrame.populateTable(WijzigenZoek.table, MainFrame.data);
@@ -114,9 +114,9 @@ public class WijzigenWijzig extends JFrame {
 							.Delete("UPDATE `zeecontainer`.`data` SET `Voornaam`='"
 									+ p.voornaam + "', `Achternaam`='"
 									+ p.achternaam + "', `Dag`='"
-									+ Dag.toString(p.dag) + "', `Adres`='"
+									+ p.dag.toString() + "', `Adres`='"
 									+ p.adres + "', `Postcode`='" + p.postcode
-									+ "', `Woonplaats`='" + p.stad
+									+ "', `Woonplaats`='" + p.woonplaats
 									+ "' WHERE `idData`='" + p.databaseID
 									+ "';");
 				} catch (Exception e) {
