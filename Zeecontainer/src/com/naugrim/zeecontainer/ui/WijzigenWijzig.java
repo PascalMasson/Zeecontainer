@@ -42,6 +42,7 @@ public class WijzigenWijzig extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		contentPane.setLayout(null);
 
 		lblVoornaam = new JLabel("Voornaam");

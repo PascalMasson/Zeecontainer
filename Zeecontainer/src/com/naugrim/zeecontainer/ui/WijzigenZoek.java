@@ -45,6 +45,7 @@ public class WijzigenZoek extends JFrame implements DocumentListener {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setContentPane(contentPane);
 
 		JScrollPane scrollPane = new JScrollPane();

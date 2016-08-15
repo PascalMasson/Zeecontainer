@@ -43,7 +43,7 @@ public class Verwijderen extends JFrame implements DocumentListener {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		JScrollPane scrollPane = new JScrollPane();
 		contentPane.add(scrollPane, BorderLayout.CENTER);
 
