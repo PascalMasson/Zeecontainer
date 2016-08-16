@@ -95,7 +95,6 @@ public class MainFrame extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public MainFrame() {
-
 		String host = "jdbc:mysql://192.168.178.28/zeecontainer";
 		InetAddress adrr;
 		try {
@@ -117,7 +116,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
-
+		
 		directoryLocation.put("FirstBoot", "c:\\zeecontainer\\bootflag.txt");
 
 		if (!Paths.get(directoryLocation.get("FirstBoot")).toFile().exists()) {
@@ -156,7 +155,14 @@ public class MainFrame extends JFrame implements ActionListener {
 		}
 
 		checkDirectories(directoryLocation);
-
+		while (password == null){
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
 		try {
 			encrypter = new Encryption(new SecretKeySpec(password.getBytes(), "Blowfish"));
 		} catch (Exception e2) {
@@ -480,13 +486,25 @@ public class MainFrame extends JFrame implements ActionListener {
 		table = new JTable();
 		table.setFillsViewportHeight(true);
 		table.setCellSelectionEnabled(true);
-		table.setModel(new DefaultTableModel(new Object[][] { { null, null, null, null, null, null }, }, new String[] { "Voornaam", "Achternaam", "Dag", "Adres", "Postcode", "Woonplaats" }) {
-			@SuppressWarnings("rawtypes")
-			Class[] columnTypes = new Class[] { String.class, String.class, String.class, String.class, Object.class, String.class };
-
-			@SuppressWarnings({ "unchecked", "rawtypes" })
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null, null, null, null, null},
+			},
+			new String[] {
+				"Voornaam", "Achternaam", "Dag", "Adres", "Postcode", "Woonplaats"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				String.class, String.class, String.class, String.class, Object.class, String.class
+			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
+			}
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
 			}
 		});
 		((DefaultTableModel) table.getModel()).setRowCount(0);
@@ -502,12 +520,12 @@ public class MainFrame extends JFrame implements ActionListener {
 		// After the table is created populate it with the data in the list
 		populateTable(table, data);
 
-		try {
+		/*try {
 			// Use enryption to write all userdata to the stored location
 			encrypter.Write(directoryLocation.get("UDL"), data.toArray());
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 
 		Person[] tmp = null;
 

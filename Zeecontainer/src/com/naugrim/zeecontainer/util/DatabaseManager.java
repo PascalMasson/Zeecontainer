@@ -43,23 +43,31 @@ public class DatabaseManager {
 		// TODO RETURN PERSON ARRAY. PROCESS THIS ARRAY IN CALLING FUNCTION
 		stmt = con.createStatement();
 		ResultSet rs = stmt.executeQuery(sql);
-		String voornaam, achternaam, adres, postcode, woonplaats;
-		Dag dag;
-		int id;
 
+		
 		// TODO CREATE PERSON FROM VARIABLED THEN ADD THAT PERSON TO AN ARRAY.
 		// THIS ARRAY WILL HAVE TO BE FED INTO THE DATA AND THE TABLE
 		ArrayList<Person> plist = new ArrayList<>();
 		while (rs.next()) {
-			id = rs.getInt("idData");
-			voornaam = rs.getString("Voornaam");
-			achternaam = rs.getString("Achternaam");
-			dag = Dag.fromString(rs.getString("Dag"));
-			adres = rs.getString("adres");
-			postcode = rs.getString("Postcode");
-			woonplaats = rs.getString("Woonplaats");
-			plist.add(new Person(id, voornaam.trim(), achternaam.trim(), dag,
-					adres, postcode.trim(), woonplaats));
+			int DBID = rs.getInt("DatabaseID");
+			int inschrijfnummer = rs.getInt("Inschrijfnummer");
+			String voornaam = rs.getString("Voornaam");
+			String achternaam = rs.getString("Achternaam");
+			boolean reglement = (rs.getInt("Reglementen" ) == 0 ) ? false : true;
+			String instantie = rs.getString("Instantie");
+			String contperInstantie = rs.getString("ContactpersoonInstantie");
+			String telefoonnummerContact = rs.getString("TelefoonnummerContact");
+			String emailContact = rs.getString("E-mailContact");
+			String adres = rs.getString("Adres");
+			String postcode = rs.getString("Postcode");
+			String woonplaats = rs.getString("Woonplaats");
+			String telefoonnummer = rs.getString("Telefoonnummer");
+			String mail = rs.getString("E-mailadres");
+			int volwassenen = rs.getInt("Volwassenen");
+			int kinderen = rs.getInt("Kinderen");
+			Dag dag = Dag.fromString(rs.getString("Winkeldag"));
+			
+			plist.add(new Person(dag, voornaam, achternaam, adres, postcode, woonplaats, telefoonnummer, mail, instantie, contperInstantie, telefoonnummerContact, emailContact, DBID, inschrijfnummer, volwassenen, kinderen, reglement));
 		}
 		System.out.println(rs.getRow());
 		System.out.println(rs.getFetchSize() + "/" + rs.getFetchDirection());
@@ -106,22 +114,6 @@ public class DatabaseManager {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	public ArrayList<Person> dummyData(int amountofpersons, int namelength) {
-		// System.out.println("DatabaseManager.dummyData()");
-		ArrayList<Person> array = new ArrayList<Person>();
-		for (int i = 0; i < amountofpersons; i++) {
-			// System.out.println("DatabaseManager.dummyData()");
-			array.add(new Person(new Random().nextInt(),
-					RandomString.generateRandomString(namelength),
-					RandomString.generateRandomString(namelength),
-					Dag.RandomDag(),
-					RandomString.generateRandomString(namelength),
-					RandomString.generateRandomZipCode("nnnnll"),
-					RandomString.generateRandomString(namelength)));
-		}
-		return array;
 	}
 
 	public int getNextID() {
