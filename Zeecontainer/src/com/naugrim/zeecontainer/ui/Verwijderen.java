@@ -49,17 +49,17 @@ public class Verwijderen extends JFrame implements DocumentListener {
 
 		table = new JTable();
 		table.setCellSelectionEnabled(true);
-		table.setModel(new DefaultTableModel(
-				new Object[][] { { null, null, null, null, null, null }, },
-				new String[] { "Voornaam", "Achternaam", "Dag", "Adres",
-						"Postcode", "Woonplaats" }) {
-			@SuppressWarnings("rawtypes")
-			Class[] columnTypes = new Class[] { String.class, String.class,
-					String.class, String.class, Object.class, String.class };
+		table.setModel(new DefaultTableModel(new Object[][] { { null, null, null, null, null, null, null, null, null, null, null }, }, new String[] { "Inschrijfnummer", "Voornaam", "Achternaam", "Dag", "Adres", "Postcode", "Woonplaats", "E-mailadres", "Telefoonnummer", "Volwassenen", "Kinderen" }) {
+			Class[] columnTypes = new Class[] { Integer.class, String.class, String.class, String.class, Object.class, String.class, String.class, String.class, String.class, String.class, String.class };
 
-			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
+			}
+
+			boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false, false, false, false, false };
+
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
 			}
 		});
 		((DefaultTableModel) table.getModel()).setRowCount(0);
@@ -73,9 +73,7 @@ public class Verwijderen extends JFrame implements DocumentListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				int n = JOptionPane.showConfirmDialog(Verwijderen.instance,
-						"Weet je zeker dat je de geselecteerde items wil verwijderen?",
-						"", JOptionPane.YES_NO_OPTION);
+				int n = JOptionPane.showConfirmDialog(Verwijderen.instance, "Weet je zeker dat je de geselecteerde items wil verwijderen?", "", JOptionPane.YES_NO_OPTION);
 				System.out.println(n);
 				if (n == 1) {
 					return;
@@ -110,10 +108,7 @@ public class Verwijderen extends JFrame implements DocumentListener {
 											// alles is hetzelfde, ga ervan uit
 											// dat je het juiste persoon hebt
 											try {
-												MainFrame.manager
-														.Delete("DELETE FROM `zeecontainer`.`data` WHERE `idData`='"
-																+ person.databaseID
-																+ "';");
+												MainFrame.manager.Delete("DELETE FROM `zeecontainer`.`data` WHERE `idData`='" + person.databaseID + "';");
 											} catch (Exception e1) {
 												// TODO Auto-generated catch
 												// block
@@ -121,28 +116,31 @@ public class Verwijderen extends JFrame implements DocumentListener {
 											}
 
 											MainFrame.data.remove(i);
-											MainFrame.populateTable(table,
-													MainFrame.data);
-											MainFrame.populateTable(
-													MainFrame.table,
-													MainFrame.data);
+											MainFrame.populateTable(table, MainFrame.data);
+											MainFrame.populateTable(MainFrame.table, MainFrame.data);
 
-										} else {
+										}
+										else {
 											continue;
 										}
-									} else {
+									}
+									else {
 										continue;
 									}
-								} else {
+								}
+								else {
 									continue;
 								}
-							} else {
+							}
+							else {
 								continue;
 							}
-						} else {
+						}
+						else {
 							continue;
 						}
-					} else {
+					}
+					else {
 						continue;
 					}
 				}
@@ -179,7 +177,8 @@ public class Verwijderen extends JFrame implements DocumentListener {
 		String text = textField.getText();
 		if (text.length() == 0) {
 			sorter.setRowFilter(null);
-		} else {
+		}
+		else {
 			sorter.setRowFilter(RowFilter.regexFilter(text));
 		}
 	}

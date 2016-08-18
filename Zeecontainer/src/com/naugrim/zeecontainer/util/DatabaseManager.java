@@ -30,8 +30,7 @@ public class DatabaseManager {
 			con = DriverManager.getConnection(host, username, password);
 			stmt = con.createStatement();
 		} catch (SQLException e) {
-			System.err.println(
-					"Failed to create a connection with the provided database");
+			System.err.println("Failed to create a connection with the provided database");
 			e.printStackTrace();
 		}
 	}
@@ -44,29 +43,29 @@ public class DatabaseManager {
 		stmt = con.createStatement();
 		ResultSet rs = stmt.executeQuery(sql);
 
-		
 		// TODO CREATE PERSON FROM VARIABLED THEN ADD THAT PERSON TO AN ARRAY.
 		// THIS ARRAY WILL HAVE TO BE FED INTO THE DATA AND THE TABLE
 		ArrayList<Person> plist = new ArrayList<>();
 		while (rs.next()) {
-			int DBID = rs.getInt("DatabaseID");
-			int inschrijfnummer = rs.getInt("Inschrijfnummer");
-			String voornaam = rs.getString("Voornaam");
-			String achternaam = rs.getString("Achternaam");
-			boolean reglement = (rs.getInt("Reglementen" ) == 0 ) ? false : true;
-			String instantie = rs.getString("Instantie");
-			String contperInstantie = rs.getString("ContactpersoonInstantie");
-			String telefoonnummerContact = rs.getString("TelefoonnummerContact");
-			String emailContact = rs.getString("E-mailContact");
-			String adres = rs.getString("Adres");
-			String postcode = rs.getString("Postcode");
-			String woonplaats = rs.getString("Woonplaats");
-			String telefoonnummer = rs.getString("Telefoonnummer");
-			String mail = rs.getString("E-mailadres");
-			int volwassenen = rs.getInt("Volwassenen");
-			int kinderen = rs.getInt("Kinderen");
-			Dag dag = Dag.fromString(rs.getString("Winkeldag"));
-			
+			System.out.println("RS.NEXT()");
+			int DBID = rs.getInt("DatabaseID"); // hidden
+			int inschrijfnummer = rs.getInt("Inschrijfnummer"); // table
+			String voornaam = rs.getString("Voornaam"); // table
+			String achternaam = rs.getString("Achternaam"); // table
+			boolean reglement = (rs.getInt("Reglementen") == 0) ? false : true; // table
+			String instantie = rs.getString("Instantie"); // details
+			String contperInstantie = rs.getString("ContactpersoonInstantie"); // details
+			String telefoonnummerContact = rs.getString("TelefoonnummerContact"); // details
+			String emailContact = rs.getString("EmailContact"); // details
+			String adres = rs.getString("Adres"); // table
+			String postcode = rs.getString("Postcode"); // table
+			String woonplaats = rs.getString("Woonplaats"); // table
+			String telefoonnummer = rs.getString("Telefoonnummer"); // table
+			String mail = rs.getString("Emailadres"); // table
+			int volwassenen = rs.getInt("Volwassenen"); // table
+			int kinderen = rs.getInt("Kinderen"); // table
+			Dag dag = Dag.fromString(rs.getString("Winkeldag")); // table
+
 			plist.add(new Person(dag, voornaam, achternaam, adres, postcode, woonplaats, telefoonnummer, mail, instantie, contperInstantie, telefoonnummerContact, emailContact, DBID, inschrijfnummer, volwassenen, kinderen, reglement));
 		}
 		System.out.println(rs.getRow());
@@ -75,8 +74,7 @@ public class DatabaseManager {
 		Person[] parr = new Person[plist.size()];
 
 		int i = 0;
-		for (Iterator<Person> iterator = plist.iterator(); iterator
-				.hasNext();) {
+		for (Iterator<Person> iterator = plist.iterator(); iterator.hasNext();) {
 			Person person = iterator.next();
 			parr[i] = person;
 			i++;
@@ -86,8 +84,7 @@ public class DatabaseManager {
 	}
 
 	public void SendPassword(String PW) {
-		String sql = "INSERT INTO `zeecontainer`.`password` (`hash`) VALUES ('"
-				+ PW.hashCode() + "');";
+		String sql = "INSERT INTO `zeecontainer`.`password` (`hash`) VALUES ('" + PW.hashCode() + "');";
 
 		try {
 			stmt.execute(sql);
@@ -101,13 +98,7 @@ public class DatabaseManager {
 	public void put(String table_name, Person[] Values) {
 		String sql = "";
 		for (int i = 0; i < Values.length; i++) {
-			sql = "INSERT INTO `zeecontainer`.`" + table_name
-					+ "` (`Voornaam`, `Achternaam`, `Dag`, "
-					+ "`Adres`, `Postcode`, `Woonplaats`) VALUES ('"
-					+ Values[i].voornaam + "', '" + Values[i].achternaam
-					+ "', '" + Values[i].dag.toString() + "', '"
-					+ Values[i].adres + "', ' " + Values[i].postcode + "', '"
-					+ Values[i].woonplaats + "');";
+			sql = "INSERT INTO `zeecontainer`.`" + table_name + "` (`Voornaam`, `Achternaam`, `Dag`, " + "`Adres`, `Postcode`, `Woonplaats`) VALUES ('" + Values[i].voornaam + "', '" + Values[i].achternaam + "', '" + Values[i].dag.toString() + "', '" + Values[i].adres + "', ' " + Values[i].postcode + "', '" + Values[i].woonplaats + "');";
 			try {
 				stmt.execute(sql);
 			} catch (SQLException e) {
@@ -129,8 +120,7 @@ public class DatabaseManager {
 	public int getPassword() {
 		try {
 			stmt = con.createStatement();
-			ResultSet rs = stmt
-					.executeQuery("SELECT * FROM zeecontainer.password;");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM zeecontainer.password;");
 			int pwhash = 0;
 
 			while (rs.next()) {

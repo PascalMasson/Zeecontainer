@@ -2,23 +2,18 @@ package com.naugrim.zeecontainer.ui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.PrinterException;
 import java.io.File;
-import java.io.FileWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JFrame;
@@ -27,20 +22,14 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextPane;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableModel;
 
 import com.naugrim.zeecontainer.frame.Dag;
 import com.naugrim.zeecontainer.frame.Person;
-import com.naugrim.zeecontainer.util.CSV;
 import com.naugrim.zeecontainer.util.DatabaseManager;
 import com.naugrim.zeecontainer.util.Encryption;
 import com.naugrim.zeecontainer.util.Excel;
@@ -95,19 +84,15 @@ public class MainFrame extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public MainFrame() {
-		String host = "jdbc:mysql://192.168.178.28/zeecontainer";
-		InetAddress adrr;
-		try {
-			adrr = InetAddress.getLocalHost();
-			String hostname = adrr.getHostName();
-			System.out.println("hostname: " + hostname);
-			if (hostname == "Pascal-School") {
-				host = "jdbc:mysql://localhost/zeecontainer";
-			}
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		String host = "jdbc:mysql://localhost/zeecontainer";
+		/*
+		 * InetAddress adrr; try { adrr = InetAddress.getLocalHost(); String
+		 * hostname = adrr.getHostName(); System.out.println("hostname: " +
+		 * hostname); if (hostname == "Pascal-School") { host =
+		 * "jdbc:mysql://localhost/zeecontainer"; } } catch
+		 * (UnknownHostException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); }
+		 */
 
 		manager = new DatabaseManager(host, "java", "javapw");
 
@@ -116,7 +101,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
-		
+
 		directoryLocation.put("FirstBoot", "c:\\zeecontainer\\bootflag.txt");
 
 		if (!Paths.get(directoryLocation.get("FirstBoot")).toFile().exists()) {
@@ -155,14 +140,11 @@ public class MainFrame extends JFrame implements ActionListener {
 		}
 
 		checkDirectories(directoryLocation);
-		while (password == null){
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
+		/*
+		 * while (password == null){ try { Thread.sleep(100); } catch
+		 * (InterruptedException e1) { // TODO Auto-generated catch block
+		 * e1.printStackTrace(); } }
+		 */
 		try {
 			encrypter = new Encryption(new SecretKeySpec(password.getBytes(), "Blowfish"));
 		} catch (Exception e2) {
@@ -289,7 +271,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
 				for (Iterator iterator = data.iterator(); iterator.hasNext();) {
 					Person p = (Person) iterator.next();
-					map.put("0", new String[]{"Voornaam", "Achternaam", "Dag", "Adres", "Postcode", "Woonplaats"});
+					map.put("0", new String[] { "Voornaam", "Achternaam", "Dag", "Adres", "Postcode", "Woonplaats" });
 					if (p.dag == Dag.MAANDAG)
 						map.put(String.valueOf(i), new Object[] { p.voornaam, p.achternaam, p.dag.toString(), p.adres, p.postcode, p.woonplaats });
 
@@ -486,23 +468,15 @@ public class MainFrame extends JFrame implements ActionListener {
 		table = new JTable();
 		table.setFillsViewportHeight(true);
 		table.setCellSelectionEnabled(true);
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null, null, null},
-			},
-			new String[] {
-				"Voornaam", "Achternaam", "Dag", "Adres", "Postcode", "Woonplaats"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, String.class, String.class, String.class, Object.class, String.class
-			};
+		table.setModel(new DefaultTableModel(new Object[][] { { null, null, null, null, null, null, null, null, null, null, null }, }, new String[] { "Inschrijfnummer", "Voornaam", "Achternaam", "Dag", "Adres", "Postcode", "Woonplaats", "E-mailadres", "Telefoonnummer", "Volwassenen", "Kinderen" }) {
+			Class[] columnTypes = new Class[] { Integer.class, String.class, String.class, String.class, Object.class, String.class, String.class, String.class, String.class, String.class, String.class };
+
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
-			boolean[] columnEditables = new boolean[] {
-				false, false, false, false, false, false
-			};
+
+			boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false, false, false, false, false };
+
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
@@ -520,12 +494,11 @@ public class MainFrame extends JFrame implements ActionListener {
 		// After the table is created populate it with the data in the list
 		populateTable(table, data);
 
-		/*try {
-			// Use enryption to write all userdata to the stored location
-			encrypter.Write(directoryLocation.get("UDL"), data.toArray());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}*/
+		/*
+		 * try { // Use enryption to write all userdata to the stored location
+		 * encrypter.Write(directoryLocation.get("UDL"), data.toArray()); }
+		 * catch (Exception e) { e.printStackTrace(); }
+		 */
 
 		Person[] tmp = null;
 
@@ -543,7 +516,6 @@ public class MainFrame extends JFrame implements ActionListener {
 			data.add(person);
 		}
 		populateTable(table, data);
-
 
 	}
 
@@ -592,7 +564,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		for (int i = 0; i < list.size(); i++) {
 			cur = list.get(i);
 			if (filterDag == Dag.ALLE || filterDag == cur.dag)
-				model.addRow(new Object[] { cur.voornaam, cur.achternaam, cur.dag.toString(), cur.adres, cur.postcode, cur.woonplaats });
+				model.addRow(new Object[] { cur.inschrijfnummer, cur.voornaam, cur.achternaam, cur.dag.toString(), cur.adres, cur.postcode, cur.woonplaats, cur.emailadres, cur.telefoonnummer, cur.volwassenen, cur.kinderen });
 
 		}
 	}
@@ -635,6 +607,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		int DBPW = manager.getPassword();
 
 		if (DBPW == result.hashCode()) {
+			password = result;
 			return true;
 		}
 		else {

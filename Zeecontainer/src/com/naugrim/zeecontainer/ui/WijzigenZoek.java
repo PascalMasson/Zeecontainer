@@ -53,17 +53,17 @@ public class WijzigenZoek extends JFrame implements DocumentListener {
 
 		table = new JTable();
 		table.setCellSelectionEnabled(true);
-		table.setModel(new DefaultTableModel(
-				new Object[][] { { null, null, null, null, null, null }, },
-				new String[] { "Voornaam", "Achternaam", "Dag", "Adres",
-						"Postcode", "Woonplaats" }) {
-			@SuppressWarnings("rawtypes")
-			Class[] columnTypes = new Class[] { String.class, String.class,
-					String.class, String.class, Object.class, String.class };
+		table.setModel(new DefaultTableModel(new Object[][] { { null, null, null, null, null, null, null, null, null, null, null }, }, new String[] { "Inschrijfnummer", "Voornaam", "Achternaam", "Dag", "Adres", "Postcode", "Woonplaats", "E-mailadres", "Telefoonnummer", "Volwassenen", "Kinderen" }) {
+			Class[] columnTypes = new Class[] { Integer.class, String.class, String.class, String.class, Object.class, String.class, String.class, String.class, String.class, String.class, String.class };
 
-			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
+			}
+
+			boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false, false, false, false, false };
+
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
 			}
 		});
 		((DefaultTableModel) table.getModel()).setRowCount(0);
@@ -103,37 +103,36 @@ public class WijzigenZoek extends JFrame implements DocumentListener {
 								if (person.adres == adres) {
 									if (person.postcode == postcode) {
 										if (person.woonplaats == woonplaats) {
-											WijzigenWijzig ww = new WijzigenWijzig(
-													person);
+											WijzigenWijzig ww = new WijzigenWijzig(person);
 											ww.setVisible(true);
-											ww.txtVoornaam
-													.setText(person.voornaam);
-											ww.txtAchternaam
-													.setText(person.achternaam);
-											ww.cbDag.setSelectedIndex(
-													Dag.getNumberFromDag(
-															person.dag) - 1);
+											ww.txtVoornaam.setText(person.voornaam);
+											ww.txtAchternaam.setText(person.achternaam);
+											ww.cbDag.setSelectedIndex(Dag.getNumberFromDag(person.dag) - 1);
 											ww.txtAdres.setText(person.adres);
-											ww.txtPostcode
-													.setText(person.postcode);
-											ww.txtWoonplaats
-													.setText(person.woonplaats);
-										} else {
+											ww.txtPostcode.setText(person.postcode);
+											ww.txtWoonplaats.setText(person.woonplaats);
+										}
+										else {
 											continue;
 										}
-									} else {
+									}
+									else {
 										continue;
 									}
-								} else {
+								}
+								else {
 									continue;
 								}
-							} else {
+							}
+							else {
 								continue;
 							}
-						} else {
+						}
+						else {
 							continue;
 						}
-					} else {
+					}
+					else {
 						continue;
 					}
 				}
@@ -169,7 +168,8 @@ public class WijzigenZoek extends JFrame implements DocumentListener {
 		String text = textField.getText();
 		if (text.length() == 0) {
 			sorter.setRowFilter(null);
-		} else {
+		}
+		else {
 			sorter.setRowFilter(RowFilter.regexFilter(text));
 		}
 	}

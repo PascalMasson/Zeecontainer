@@ -111,15 +111,7 @@ public class WijzigenWijzig extends JFrame {
 				MainFrame.populateTable(WijzigenZoek.table, MainFrame.data);
 
 				try {
-					MainFrame.manager
-							.Delete("UPDATE `zeecontainer`.`data` SET `Voornaam`='"
-									+ p.voornaam + "', `Achternaam`='"
-									+ p.achternaam + "', `Dag`='"
-									+ p.dag.toString() + "', `Adres`='"
-									+ p.adres + "', `Postcode`='" + p.postcode
-									+ "', `Woonplaats`='" + p.woonplaats
-									+ "' WHERE `idData`='" + p.databaseID
-									+ "';");
+					MainFrame.manager.Delete("UPDATE `zeecontainer`.`data` SET `Voornaam`='" + p.voornaam + "', `Achternaam`='" + p.achternaam + "', `Dag`='" + p.dag.toString() + "', `Adres`='" + p.adres + "', `Postcode`='" + p.postcode + "', `Woonplaats`='" + p.woonplaats + "' WHERE `idData`='" + p.databaseID + "';");
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

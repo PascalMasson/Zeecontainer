@@ -73,10 +73,7 @@ public class Toevoegen extends JFrame {
 		contentPane.setLayout(null);
 
 		persoonsgegevens = new JPanel();
-		TitledBorder pg = new TitledBorder(
-				UIManager.getBorder("TitledBorder.border"), "Persoonsgegevens",
-				TitledBorder.LEADING, TitledBorder.TOP, null,
-				new Color(0, 0, 0));
+		TitledBorder pg = new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Persoonsgegevens", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0));
 		pg.setTitleFont(pg.getTitleFont().deriveFont(Font.BOLD));
 		persoonsgegevens.setBorder(pg);
 		persoonsgegevens.setBounds(10, 11, 556, 255);
@@ -171,10 +168,7 @@ public class Toevoegen extends JFrame {
 		txtKinderen.setColumns(10);
 
 		dagenregelementen = new JPanel();
-		dagenregelementen.setBorder(
-				new TitledBorder(UIManager.getBorder("TitledBorder.border"),
-						"Dag en reglementen", TitledBorder.LEADING,
-						TitledBorder.TOP, null, new Color(0, 0, 0)));
+		dagenregelementen.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Dag en reglementen", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		dagenregelementen.setBounds(10, 277, 273, 90);
 		contentPane.add(dagenregelementen);
 		dagenregelementen.setLayout(null);
@@ -187,8 +181,7 @@ public class Toevoegen extends JFrame {
 		cbDag.setBounds(131, 16, 136, 20);
 		dagenregelementen.add(cbDag);
 
-		lblRegelementenGelezenEn = new JLabel(
-				"<html>Reglementen gelezen en getekend</html>");
+		lblRegelementenGelezenEn = new JLabel("<html>Reglementen gelezen en getekend</html>");
 		lblRegelementenGelezenEn.setBounds(6, 44, 126, 35);
 		dagenregelementen.add(lblRegelementenGelezenEn);
 
@@ -208,21 +201,9 @@ public class Toevoegen extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				int id = MainFrame.data
-						.get(MainFrame.data.size() - 1).databaseID;
+				int id = MainFrame.data.get(MainFrame.data.size() - 1).databaseID;
 				id++;
-				Person p = new Person(
-						Dag.getDagFromDagnumber(cbDag.getSelectedIndex() + 1),
-						txtVoornaam.getText(), txtAchternaam.getText(),
-						txtAdres.getText(), txtPostcode.getText(),
-						txtWoonplaats.getText(), txtTelefoon.getText(),
-						txtEmail.getText(), txtInstantie.getText(),
-						txtContInstantie.getText(), txtTelInstantie.getText(),
-						txtMailContact.getText(), id,
-						Integer.parseInt(textField.getText()),
-						Integer.parseInt(txtVolwassenen.getText()),
-						Integer.parseInt(txtKinderen.getText()),
-						checkregelementen.isSelected());
+				Person p = new Person(Dag.getDagFromDagnumber(cbDag.getSelectedIndex() + 1), txtVoornaam.getText(), txtAchternaam.getText(), txtAdres.getText(), txtPostcode.getText(), txtWoonplaats.getText(), txtTelefoon.getText(), txtEmail.getText(), txtInstantie.getText(), txtContInstantie.getText(), txtTelInstantie.getText(), txtMailContact.getText(), id, Integer.parseInt(textField.getText()), Integer.parseInt(txtVolwassenen.getText()), Integer.parseInt(txtKinderen.getText()), checkregelementen.isSelected());
 
 				System.out.println(id);
 				MainFrame.data.add(p);
@@ -235,16 +216,12 @@ public class Toevoegen extends JFrame {
 		contentPane.add(btnToevoegen);
 
 		contactgegevensinstantie = new JPanel();
-		contactgegevensinstantie.setBorder(
-				new TitledBorder(UIManager.getBorder("TitledBorder.border"),
-						"Contactgegevens instantie", TitledBorder.LEADING,
-						TitledBorder.TOP, null, new Color(0, 0, 0)));
+		contactgegevensinstantie.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Contactgegevens instantie", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		contactgegevensinstantie.setBounds(297, 277, 273, 128);
 		contentPane.add(contactgegevensinstantie);
 		contactgegevensinstantie.setLayout(null);
 
-		lblContactpersoonInstantie = new JLabel(
-				"<html>Contactpersoon instantie</html>");
+		lblContactpersoonInstantie = new JLabel("<html>Contactpersoon instantie</html>");
 		lblContactpersoonInstantie.setBounds(6, 44, 115, 28);
 		contactgegevensinstantie.add(lblContactpersoonInstantie);
 
