@@ -84,7 +84,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public MainFrame() {
-		String host = "jdbc:mysql://localhost/zeecontainer";
+		String host = "jdbc:mysql://192.168.178.28/zeecontainer";
 		/*
 		 * InetAddress adrr; try { adrr = InetAddress.getLocalHost(); String
 		 * hostname = adrr.getHostName(); System.out.println("hostname: " +
