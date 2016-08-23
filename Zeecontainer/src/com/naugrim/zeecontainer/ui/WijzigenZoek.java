@@ -52,22 +52,18 @@ public class WijzigenZoek extends JFrame implements DocumentListener {
 		table = new JTable();
 		table.setCellSelectionEnabled(true);
 		table.setModel(new DefaultTableModel(
-				new Object[][] { { null, null, null, null, null, null, null,
-						null, null, null, null }, },
-				new String[] { "Inschrijfnummer", "Voornaam", "Achternaam",
-						"Dag", "Adres", "Postcode", "Woonplaats", "E-mailadres",
-						"Telefoonnummer", "Volwassenen", "Kinderen" }) {
-			Class[] columnTypes = new Class[] { Integer.class, String.class,
-					String.class, String.class, Object.class, String.class,
-					String.class, String.class, String.class, String.class,
-					String.class };
+				new Object[][] { { null, null, null, null, null, null, null, null, null, null, null }, },
+				new String[] { "Inschrijfnummer", "Voornaam", "Achternaam", "Dag", "Adres", "Postcode", "Woonplaats",
+						"E-mailadres", "Telefoonnummer", "Volwassenen", "Kinderen" }) {
+			Class[] columnTypes = new Class[] { Integer.class, String.class, String.class, String.class, Object.class,
+					String.class, String.class, String.class, String.class, String.class, String.class };
 
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 
-			boolean[] columnEditables = new boolean[] { false, false, false,
-					false, false, false, false, false, false, false, false };
+			boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false, false, false,
+					false, false };
 
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -110,39 +106,22 @@ public class WijzigenZoek extends JFrame implements DocumentListener {
 								if (person.adres == adres) {
 									if (person.postcode == postcode) {
 										if (person.woonplaats == woonplaats) {
-											WijzigenWijzig ww = new WijzigenWijzig(
-													person);
+											WijzigenWijzig ww = new WijzigenWijzig(person);
 											ww.setVisible(true);
-											ww.txtVoornaam
-													.setText(person.voornaam);
-											ww.txtAchternaam
-													.setText(person.achternaam);
-											ww.cbDag.setSelectedIndex(
-													Dag.getNumberFromDag(
-															person.dag) - 1);
+											ww.txtVoornaam.setText(person.voornaam);
+											ww.txtAchternaam.setText(person.achternaam);
+											ww.cbDag.setSelectedIndex(Dag.getNumberFromDag(person.dag) - 1);
 											ww.txtAdres.setText(person.adres);
-											ww.txtPostcode
-													.setText(person.postcode);
-											ww.txtWoonplaats
-													.setText(person.woonplaats);
-											ww.txtContInstantie.setText(
-													person.contactInstantie);
-											ww.txtEmail
-													.setText(person.emailadres);
-											ww.txtInschrijfnummer
-													.setText(String.valueOf(
-															person.inschrijfnummer));
-											ww.txtInstantie
-													.setText(person.instantie);
-											ww.txtKinderen.setText(String
-													.valueOf(person.kinderen));
-											ww.txtMailContact.setText(
-													person.emailContact);
-											ww.txtTelInstantie.setText(
-													person.telefoonnummerContact);
-											ww.txtVolwassenen
-													.setText(String.valueOf(
-															person.volwassenen));
+											ww.txtPostcode.setText(person.postcode);
+											ww.txtWoonplaats.setText(person.woonplaats);
+											ww.txtContInstantie.setText(person.contactInstantie);
+											ww.txtEmail.setText(person.emailadres);
+											ww.txtInschrijfnummer.setText(String.valueOf(person.inschrijfnummer));
+											ww.txtInstantie.setText(person.instantie);
+											ww.txtKinderen.setText(String.valueOf(person.kinderen));
+											ww.txtMailContact.setText(person.emailContact);
+											ww.txtTelInstantie.setText(person.telefoonnummerContact);
+											ww.txtVolwassenen.setText(String.valueOf(person.volwassenen));
 											ww.txtTelefoon.setText(person.telefoonnummer);
 										} else {
 											continue;

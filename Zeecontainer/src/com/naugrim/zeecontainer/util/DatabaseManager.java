@@ -66,7 +66,9 @@ public class DatabaseManager {
 			int kinderen = rs.getInt("Kinderen"); // table
 			Dag dag = Dag.fromString(rs.getString("Winkeldag")); // table
 
-			plist.add(new Person(dag, voornaam, achternaam, adres, postcode, woonplaats, telefoonnummer, mail, instantie, contperInstantie, telefoonnummerContact, emailContact, DBID, inschrijfnummer, volwassenen, kinderen, reglement));
+			plist.add(new Person(dag, voornaam, achternaam, adres, postcode, woonplaats, telefoonnummer, mail,
+					instantie, contperInstantie, telefoonnummerContact, emailContact, DBID, inschrijfnummer,
+					volwassenen, kinderen, reglement));
 		}
 		System.out.println(rs.getRow());
 		System.out.println(rs.getFetchSize() + "/" + rs.getFetchDirection());
@@ -98,7 +100,10 @@ public class DatabaseManager {
 	public void put(String table_name, Person[] Values) {
 		String sql = "";
 		for (int i = 0; i < Values.length; i++) {
-			sql = "INSERT INTO `zeecontainer`.`" + table_name + "` (`Voornaam`, `Achternaam`, `Dag`, " + "`Adres`, `Postcode`, `Woonplaats`) VALUES ('" + Values[i].voornaam + "', '" + Values[i].achternaam + "', '" + Values[i].dag.toString() + "', '" + Values[i].adres + "', ' " + Values[i].postcode + "', '" + Values[i].woonplaats + "');";
+			sql = "INSERT INTO `zeecontainer`.`" + table_name + "` (`Voornaam`, `Achternaam`, `Dag`, "
+					+ "`Adres`, `Postcode`, `Woonplaats`) VALUES ('" + Values[i].voornaam + "', '"
+					+ Values[i].achternaam + "', '" + Values[i].dag.toString() + "', '" + Values[i].adres + "', ' "
+					+ Values[i].postcode + "', '" + Values[i].woonplaats + "');";
 			try {
 				stmt.execute(sql);
 			} catch (SQLException e) {

@@ -1,6 +1,8 @@
 package com.naugrim.zeecontainer.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -19,8 +21,7 @@ import com.lowagie.text.Font;
 import com.naugrim.zeecontainer.frame.Dag;
 import com.naugrim.zeecontainer.frame.Person;
 
-@SuppressWarnings("serial")
-public class WijzigenWijzig extends JFrame {
+public class Details extends JFrame {
 
 	JPanel contentPane;
 	JLabel lblVoornaam;
@@ -28,12 +29,11 @@ public class WijzigenWijzig extends JFrame {
 	JLabel lblChternaam;
 	JTextField txtAchternaam;
 	JLabel lblwinkeldag;
-	JComboBox<String> cbDag;
+	JTextField cbDag;
 	JLabel lblStraat;
 	JTextField txtAdres;
 	JLabel lblWoonplaats;
 	JTextField txtWoonplaats;
-	JButton btnWijzigen;
 	JLabel lblPostcode;
 	JTextField txtPostcode;
 	JTextField txtInschrijfnummer;
@@ -61,10 +61,10 @@ public class WijzigenWijzig extends JFrame {
 	 * Create the frame.
 	 */
 
-	public WijzigenWijzig(Person p) {
+	public Details(Person p) {
 		System.out.println("Toevoegen.Toevoegen()");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 599, 485);
+		setBounds(100, 100, 599, 450);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -84,6 +84,7 @@ public class WijzigenWijzig extends JFrame {
 		persoonsgegevens.add(lblVoornaam);
 
 		txtVoornaam = new JTextField();
+		txtVoornaam.setEditable(false);
 		txtVoornaam.setBounds(135, 47, 136, 20);
 		persoonsgegevens.add(txtVoornaam);
 		txtVoornaam.setColumns(10);
@@ -93,6 +94,7 @@ public class WijzigenWijzig extends JFrame {
 		persoonsgegevens.add(lblChternaam);
 
 		txtAchternaam = new JTextField();
+		txtAchternaam.setEditable(false);
 		txtAchternaam.setBounds(410, 44, 136, 20);
 		persoonsgegevens.add(txtAchternaam);
 		txtAchternaam.setColumns(10);
@@ -102,6 +104,7 @@ public class WijzigenWijzig extends JFrame {
 		persoonsgegevens.add(lblStraat);
 
 		txtAdres = new JTextField();
+		txtAdres.setEditable(false);
 		txtAdres.setBounds(135, 72, 136, 20);
 		persoonsgegevens.add(txtAdres);
 
@@ -110,6 +113,7 @@ public class WijzigenWijzig extends JFrame {
 		persoonsgegevens.add(lblWoonplaats);
 
 		txtWoonplaats = new JTextField();
+		txtWoonplaats.setEditable(false);
 		txtWoonplaats.setBounds(135, 124, 136, 20);
 		persoonsgegevens.add(txtWoonplaats);
 
@@ -118,6 +122,7 @@ public class WijzigenWijzig extends JFrame {
 		persoonsgegevens.add(lblPostcode);
 
 		txtPostcode = new JTextField();
+		txtPostcode.setEditable(false);
 		txtPostcode.setBounds(135, 100, 136, 20);
 		persoonsgegevens.add(txtPostcode);
 		txtPostcode.setColumns(10);
@@ -127,6 +132,7 @@ public class WijzigenWijzig extends JFrame {
 		persoonsgegevens.add(lblInschrijfnnummer);
 
 		txtInschrijfnummer = new JTextField();
+		txtInschrijfnummer.setEditable(false);
 		txtInschrijfnummer.setBounds(135, 22, 136, 20);
 		persoonsgegevens.add(txtInschrijfnummer);
 		txtInschrijfnummer.setColumns(10);
@@ -136,6 +142,7 @@ public class WijzigenWijzig extends JFrame {
 		persoonsgegevens.add(lblTelefoonnr);
 
 		txtTelefoon = new JTextField();
+		txtTelefoon.setEditable(false);
 		txtTelefoon.setBounds(135, 149, 136, 20);
 		persoonsgegevens.add(txtTelefoon);
 
@@ -144,6 +151,7 @@ public class WijzigenWijzig extends JFrame {
 		persoonsgegevens.add(lblMailadres);
 
 		txtEmail = new JTextField();
+		txtEmail.setEditable(false);
 		txtEmail.setBounds(135, 174, 136, 20);
 		persoonsgegevens.add(txtEmail);
 		txtEmail.setColumns(10);
@@ -153,6 +161,7 @@ public class WijzigenWijzig extends JFrame {
 		persoonsgegevens.add(lblVolwassenen);
 
 		txtVolwassenen = new JTextField();
+		txtVolwassenen.setEditable(false);
 		txtVolwassenen.setBounds(135, 199, 136, 20);
 		persoonsgegevens.add(txtVolwassenen);
 		txtVolwassenen.setColumns(10);
@@ -162,6 +171,7 @@ public class WijzigenWijzig extends JFrame {
 		persoonsgegevens.add(lblKinderenTm);
 
 		txtKinderen = new JTextField();
+		txtKinderen.setEditable(false);
 		txtKinderen.setBounds(135, 224, 136, 20);
 		persoonsgegevens.add(txtKinderen);
 		txtKinderen.setColumns(10);
@@ -172,13 +182,15 @@ public class WijzigenWijzig extends JFrame {
 		dagenregelementen.setBounds(10, 277, 273, 90);
 		contentPane.add(dagenregelementen);
 		dagenregelementen.setLayout(null);
+		
 
 		lblwinkeldag = new JLabel("Winkel-dag");
 		lblwinkeldag.setBounds(6, 19, 115, 14);
 		dagenregelementen.add(lblwinkeldag);
 
-		cbDag = new JComboBox<String>();
+		cbDag = new JTextField();
 		cbDag.setBounds(131, 16, 136, 20);
+		cbDag.setEditable(false);
 		dagenregelementen.add(cbDag);
 
 		lblRegelementenGelezenEn = new JLabel("<html>Reglementen gelezen en getekend</html>");
@@ -186,62 +198,9 @@ public class WijzigenWijzig extends JFrame {
 		dagenregelementen.add(lblRegelementenGelezenEn);
 
 		JCheckBox checkregelementen = new JCheckBox("");
+		checkregelementen.setEnabled(false);
 		checkregelementen.setBounds(131, 43, 97, 36);
 		dagenregelementen.add(checkregelementen);
-		cbDag.addItem("Maandag");
-		cbDag.addItem("Dinsdag");
-		cbDag.addItem("Woensdag");
-		cbDag.addItem("Donderdag");
-		cbDag.addItem("Vrijdag");
-		cbDag.addItem("Zaterdag");
-
-		btnWijzigen = new JButton("Wijzigen");
-		btnWijzigen.setBounds(10, 413, 556, 23);
-		btnWijzigen.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				p.voornaam = txtVoornaam.getText();
-				p.achternaam = txtAchternaam.getText();
-				p.dag = Dag.getDagFromDagnumber(cbDag.getSelectedIndex() + 1);
-				p.adres = txtAdres.getText();
-				p.postcode = txtPostcode.getText();
-				p.woonplaats = txtWoonplaats.getText();
-				p.contactInstantie = txtContInstantie.getText();
-				p.emailadres = txtEmail.getText();
-				p.emailContact = txtMailContact.getText();
-				p.inschrijfnummer = Integer.parseInt(txtInschrijfnummer.getText());
-				p.instantie = txtInstantie.getText();
-				p.kinderen = Integer.parseInt(txtKinderen.getText());
-				p.reglementen = checkregelementen.isSelected();
-				p.telefoonnummer = txtTelefoon.getText();
-				p.telefoonnummerContact = txtTelInstantie.getText();
-				p.volwassenen = Integer.parseInt(txtVolwassenen.getText());
-
-				MainFrame.populateTable(MainFrame.table, MainFrame.data);
-				MainFrame.populateTable(WijzigenZoek.table, MainFrame.data);
-
-				int tmp = (p.reglementen) ? 1 : 0;
-
-				try {
-					MainFrame.manager.Delete("UPDATE `zeecontainer`.`data` SET `DatabaseID`='" + p.databaseID
-							+ "', `Inschrijfnummer`='" + p.inschrijfnummer + "', `Voornaam`='" + p.voornaam
-							+ "', `Achternaam`='" + p.achternaam + "', `Reglementen`='" + tmp
-							+ "', `ContactpersoonInstantie`='" + p.contactInstantie + "', `TelefoonnummerContact`='"
-							+ p.telefoonnummerContact + "', `EmailContact`='" + p.emailContact + "', `Adres`='"
-							+ p.adres + "', `Postcode`='" + p.postcode + "', `Woonplaats`='" + p.woonplaats
-							+ "', `Telefoonnummer`='" + p.telefoonnummer + "', `Emailadres`='" + p.emailadres
-							+ "', `Volwassenen`='" + p.volwassenen + "', `Kinderen`='" + p.kinderen + "', `Winkeldag`='"
-							+ p.dag.toString() + "' WHERE `DatabaseID`='" + p.databaseID + "';");
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				dispose();
-
-			}
-		});
-		contentPane.add(btnWijzigen);
 
 		contactgegevensinstantie = new JPanel();
 		contactgegevensinstantie.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"),
@@ -259,11 +218,13 @@ public class WijzigenWijzig extends JFrame {
 		contactgegevensinstantie.add(lblInstantie);
 
 		txtInstantie = new JTextField();
+		txtInstantie.setEditable(false);
 		txtInstantie.setBounds(131, 16, 136, 20);
 		contactgegevensinstantie.add(txtInstantie);
 		txtInstantie.setColumns(10);
 
 		txtContInstantie = new JTextField();
+		txtContInstantie.setEditable(false);
 		txtContInstantie.setBounds(131, 45, 136, 20);
 		contactgegevensinstantie.add(txtContInstantie);
 		txtContInstantie.setColumns(10);
@@ -273,6 +234,7 @@ public class WijzigenWijzig extends JFrame {
 		contactgegevensinstantie.add(lblTelefoonnummer);
 
 		txtTelInstantie = new JTextField();
+		txtTelInstantie.setEditable(false);
 		txtTelInstantie.setBounds(131, 76, 136, 20);
 		contactgegevensinstantie.add(txtTelInstantie);
 		txtTelInstantie.setColumns(10);
@@ -282,9 +244,26 @@ public class WijzigenWijzig extends JFrame {
 		contactgegevensinstantie.add(lblEmailadres);
 
 		txtMailContact = new JTextField();
+		txtMailContact.setEditable(false);
 		txtMailContact.setBounds(131, 101, 136, 20);
 		contactgegevensinstantie.add(txtMailContact);
 		txtMailContact.setColumns(10);
+		
+		txtVoornaam.setText(p.voornaam);
+		txtAchternaam.setText(p.achternaam);
+		txtAdres.setText(p.adres);
+		txtPostcode.setText(p.postcode);
+		txtWoonplaats.setText(p.woonplaats);
+		txtContInstantie.setText(p.contactInstantie);
+		txtEmail.setText(p.emailadres);
+		txtInschrijfnummer.setText(String.valueOf(p.inschrijfnummer));
+		txtInstantie.setText(p.instantie);
+		txtKinderen.setText(String.valueOf(p.kinderen));
+		txtMailContact.setText(p.emailContact);
+		txtTelInstantie.setText(p.telefoonnummerContact);
+		txtVolwassenen.setText(String.valueOf(p.volwassenen));
+		txtTelefoon.setText(p.telefoonnummer);
+		cbDag.setText(p.dag.toString());
 	}
 
 }
