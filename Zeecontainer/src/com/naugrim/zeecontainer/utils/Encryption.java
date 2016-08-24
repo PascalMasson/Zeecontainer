@@ -1,4 +1,4 @@
-package com.naugrim.zeecontainer.util;
+package com.naugrim.zeecontainer.utils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

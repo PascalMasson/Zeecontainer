@@ -1,14 +1,8 @@
 package com.naugrim.zeecontainer.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,8 +12,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 import com.lowagie.text.Font;
-import com.naugrim.zeecontainer.frame.Dag;
 import com.naugrim.zeecontainer.frame.Person;
+import java.awt.Toolkit;
 
 public class Details extends JFrame {
 
@@ -71,8 +65,7 @@ public class Details extends JFrame {
 		contentPane.setLayout(null);
 
 		persoonsgegevens = new JPanel();
-		TitledBorder pg = new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Persoonsgegevens",
-				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0));
+		TitledBorder pg = new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Persoonsgegevens", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0));
 		pg.setTitleFont(pg.getTitleFont().deriveFont(Font.BOLD));
 		persoonsgegevens.setBorder(pg);
 		persoonsgegevens.setBounds(10, 11, 556, 255);
@@ -177,12 +170,10 @@ public class Details extends JFrame {
 		txtKinderen.setColumns(10);
 
 		dagenregelementen = new JPanel();
-		dagenregelementen.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Dag en reglementen",
-				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		dagenregelementen.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Dag en reglementen", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		dagenregelementen.setBounds(10, 277, 273, 90);
 		contentPane.add(dagenregelementen);
 		dagenregelementen.setLayout(null);
-		
 
 		lblwinkeldag = new JLabel("Winkel-dag");
 		lblwinkeldag.setBounds(6, 19, 115, 14);
@@ -203,8 +194,7 @@ public class Details extends JFrame {
 		dagenregelementen.add(checkregelementen);
 
 		contactgegevensinstantie = new JPanel();
-		contactgegevensinstantie.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"),
-				"Contactgegevens instantie", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		contactgegevensinstantie.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Contactgegevens instantie", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		contactgegevensinstantie.setBounds(297, 277, 273, 128);
 		contentPane.add(contactgegevensinstantie);
 		contactgegevensinstantie.setLayout(null);
@@ -248,7 +238,7 @@ public class Details extends JFrame {
 		txtMailContact.setBounds(131, 101, 136, 20);
 		contactgegevensinstantie.add(txtMailContact);
 		txtMailContact.setColumns(10);
-		
+
 		txtVoornaam.setText(p.voornaam);
 		txtAchternaam.setText(p.achternaam);
 		txtAdres.setText(p.adres);

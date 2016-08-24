@@ -33,10 +33,10 @@ import javax.swing.table.DefaultTableModel;
 
 import com.naugrim.zeecontainer.frame.Dag;
 import com.naugrim.zeecontainer.frame.Person;
-import com.naugrim.zeecontainer.util.DatabaseManager;
-import com.naugrim.zeecontainer.util.Encryption;
-import com.naugrim.zeecontainer.util.Excel;
-import com.naugrim.zeecontainer.util.RandomString;
+import com.naugrim.zeecontainer.utils.DatabaseManager;
+import com.naugrim.zeecontainer.utils.Encryption;
+import com.naugrim.zeecontainer.utils.Excel;
+import com.naugrim.zeecontainer.utils.RandomString;
 
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame implements ActionListener {
@@ -44,8 +44,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	private static Dag filterDag = Dag.ALLE;
 	public static DatabaseManager manager;
 	public static ArrayList<Person> data = new ArrayList<Person>();
-	public static String[] ExcelHeaderValues = new String[] { "Voornaam", "Achternaam", "Dag", "Adres", "Postcode",
-			"Woonplaats" };
+	public static String[] ExcelHeaderValues = new String[] { "Voornaam", "Achternaam", "Dag", "Adres", "Postcode", "Woonplaats" };
 	public static Encryption encrypter, MasterEncryption;
 	public static HashMap<String, String> directoryLocation = new HashMap<>();
 	private String password;
@@ -85,7 +84,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JMenuItem mnClVerwijderen;
 
 	public MainFrame() {
-		String host = "jdbc:mysql://192.168.178.28/zeecontainer";
+		String host = "jdbc:mysql://localhost/zeecontainer";
 		/*
 		 * InetAddress adrr; try { adrr = InetAddress.getLocalHost(); String
 		 * hostname = adrr.getHostName(); System.out.println("hostname: " +
@@ -126,7 +125,8 @@ public class MainFrame extends JFrame implements ActionListener {
 
 			manager.SendPassword(pw);
 
-		} else {
+		}
+		else {
 
 			try {
 				directoryLocation = MasterEncryption.Read("C:\\zeecontainer\\FWRhU.serDL");
@@ -272,8 +272,7 @@ public class MainFrame extends JFrame implements ActionListener {
 					Person p = (Person) iterator.next();
 
 					if (p.dag == Dag.MAANDAG)
-						map.put(String.valueOf(i), new Object[] { p.voornaam, p.achternaam, p.dag.toString(), p.adres,
-								p.postcode, p.woonplaats });
+						map.put(String.valueOf(i), new Object[] { p.voornaam, p.achternaam, p.dag.toString(), p.adres, p.postcode, p.woonplaats });
 
 					i++;
 				}
@@ -302,8 +301,7 @@ public class MainFrame extends JFrame implements ActionListener {
 					Person p = (Person) iterator.next();
 
 					if (p.dag == Dag.DINSDAG)
-						map.put(String.valueOf(i), new Object[] { p.voornaam, p.achternaam, p.dag.toString(), p.adres,
-								p.postcode, p.woonplaats });
+						map.put(String.valueOf(i), new Object[] { p.voornaam, p.achternaam, p.dag.toString(), p.adres, p.postcode, p.woonplaats });
 
 					i++;
 				}
@@ -332,8 +330,7 @@ public class MainFrame extends JFrame implements ActionListener {
 					Person p = (Person) iterator.next();
 
 					if (p.dag == Dag.WOENSDAG)
-						map.put(String.valueOf(i), new Object[] { p.voornaam, p.achternaam, p.dag.toString(), p.adres,
-								p.postcode, p.woonplaats });
+						map.put(String.valueOf(i), new Object[] { p.voornaam, p.achternaam, p.dag.toString(), p.adres, p.postcode, p.woonplaats });
 
 					i++;
 				}
@@ -362,8 +359,7 @@ public class MainFrame extends JFrame implements ActionListener {
 					Person p = (Person) iterator.next();
 
 					if (p.dag == Dag.DONDERDAG)
-						map.put(String.valueOf(i), new Object[] { p.voornaam, p.achternaam, p.dag.toString(), p.adres,
-								p.postcode, p.woonplaats });
+						map.put(String.valueOf(i), new Object[] { p.voornaam, p.achternaam, p.dag.toString(), p.adres, p.postcode, p.woonplaats });
 
 					i++;
 				}
@@ -392,8 +388,7 @@ public class MainFrame extends JFrame implements ActionListener {
 					Person p = (Person) iterator.next();
 
 					if (p.dag == Dag.VRIJDAG)
-						map.put(String.valueOf(i), new Object[] { p.voornaam, p.achternaam, p.dag.toString(), p.adres,
-								p.postcode, p.woonplaats });
+						map.put(String.valueOf(i), new Object[] { p.voornaam, p.achternaam, p.dag.toString(), p.adres, p.postcode, p.woonplaats });
 
 					i++;
 				}
@@ -422,8 +417,7 @@ public class MainFrame extends JFrame implements ActionListener {
 					Person p = (Person) iterator.next();
 
 					if (p.dag == Dag.ZATERDAG)
-						map.put(String.valueOf(i), new Object[] { p.voornaam, p.achternaam, p.dag.toString(), p.adres,
-								p.postcode, p.woonplaats });
+						map.put(String.valueOf(i), new Object[] { p.voornaam, p.achternaam, p.dag.toString(), p.adres, p.postcode, p.woonplaats });
 
 					i++;
 				}
@@ -439,6 +433,29 @@ public class MainFrame extends JFrame implements ActionListener {
 		mnPrDag.add(mnPrDZaterdag);
 
 		mnPrTotaal = new JMenuItem("Totaal");
+		mnPrTotaal.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				HashMap<String, Object[]> map = new HashMap<>();
+
+				int i = 1;
+
+				for (Iterator iterator = data.iterator(); iterator.hasNext();) {
+					Person p = (Person) iterator.next();
+					map.put(String.valueOf(p.inschrijfnummer), new Object[] { p.voornaam, p.achternaam, p.dag.toString(), p.adres, p.postcode, p.woonplaats });
+
+					i++;
+				}
+
+				try {
+					new Excel(map, "c:\\zeecontainer\\zaterdag.xls", ExcelHeaderValues);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		mnPrint.add(mnPrTotaal);
 
 		mnSelectie = new JMenu("Selectie");
@@ -529,22 +546,28 @@ public class MainFrame extends JFrame implements ActionListener {
 										if (person.woonplaats == woonplaats) {
 											Details d = new Details(person);
 											d.setVisible(true);
-										} else {
+										}
+										else {
 											continue;
 										}
-									} else {
+									}
+									else {
 										continue;
 									}
-								} else {
+								}
+								else {
 									continue;
 								}
-							} else {
+							}
+							else {
 								continue;
 							}
-						} else {
+						}
+						else {
 							continue;
 						}
-					} else {
+					}
+					else {
 						continue;
 					}
 				}
@@ -558,19 +581,14 @@ public class MainFrame extends JFrame implements ActionListener {
 		table = new JTable();
 		table.setFillsViewportHeight(true);
 		table.setCellSelectionEnabled(true);
-		table.setModel(new DefaultTableModel(
-				new Object[][] { { null, null, null, null, null, null, null, null, null, null, null }, },
-				new String[] { "Inschrijfnummer", "Voornaam", "Achternaam", "Dag", "Adres", "Postcode", "Woonplaats",
-						"E-mailadres", "Telefoonnummer", "Volwassenen", "Kinderen" }) {
-			Class[] columnTypes = new Class[] { Integer.class, String.class, String.class, String.class, Object.class,
-					String.class, String.class, String.class, String.class, String.class, String.class };
+		table.setModel(new DefaultTableModel(new Object[][] { { null, null, null, null, null, null, null, null, null, null, null }, }, new String[] { "Inschrijfnummer", "Voornaam", "Achternaam", "Dag", "Adres", "Postcode", "Woonplaats", "E-mailadres", "Telefoonnummer", "Volwassenen", "Kinderen" }) {
+			Class[] columnTypes = new Class[] { Integer.class, String.class, String.class, String.class, Object.class, String.class, String.class, String.class, String.class, String.class, String.class };
 
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 
-			boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false, false, false,
-					false, false };
+			boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false, false, false, false, false };
 
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -660,9 +678,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		for (int i = 0; i < list.size(); i++) {
 			cur = list.get(i);
 			if (filterDag == Dag.ALLE || filterDag == cur.dag)
-				model.addRow(new Object[] { cur.inschrijfnummer, cur.voornaam, cur.achternaam, cur.dag.toString(),
-						cur.adres, cur.postcode, cur.woonplaats, cur.emailadres, cur.telefoonnummer, cur.volwassenen,
-						cur.kinderen });
+				model.addRow(new Object[] { cur.inschrijfnummer, cur.voornaam, cur.achternaam, cur.dag.toString(), cur.adres, cur.postcode, cur.woonplaats, cur.emailadres, cur.telefoonnummer, cur.volwassenen, cur.kinderen });
 
 		}
 	}
@@ -707,7 +723,8 @@ public class MainFrame extends JFrame implements ActionListener {
 		if (DBPW == result.hashCode()) {
 			password = result;
 			return true;
-		} else {
+		}
+		else {
 			checkPassword();
 		}
 
